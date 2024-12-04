@@ -2034,6 +2034,10 @@ namespace WrathCombo.Combos
         [VariantParent(GNB_ST_Advanced, GNB_AoE_Advanced)]
         [CustomComboInfo("Ultimatum Option", "Use Variant Ultimatum on cooldown.", GNB.JobID)]
         GNB_Variant_Ultimatum = 7035,
+
+        [Bozja]
+        [CustomComboInfo("Lost Cure Option", "Use Lost Cure when appropriate.", GNB.JobID)]
+        GNB_Bozja_LostCure = 7700,
         #endregion
 
         #endregion

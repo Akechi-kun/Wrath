@@ -1,4 +1,6 @@
-﻿namespace WrathCombo.Combos.PvE.Content;
+﻿using ECommons.DalamudServices;
+
+namespace WrathCombo.Combos.PvE.Content;
 
 internal class Bozja
 {
@@ -9,7 +11,7 @@ internal class Bozja
         LostFontOfPower = 20717,
         LostSlash = 20718,
         LostDeath = 20719,
-        BannerOfNobleEnds = 20720,
+        BannerOfNobleEnds = 20720, 
         BannerOfHonoredSacrifice = 20721,
         BannerOfHonedAcuity = 20725,
         LostFairTrade = 20732,
@@ -122,6 +124,13 @@ internal class Bozja
         LightCurtain = 23911,
         ResistanceElixir = 23922;
     #endregion
+
+    public static uint InBozja => Svc.ClientState.TerritoryType switch
+    {
+        981 => 981, // Bozjan Southern Front
+        987 => 987, // Zadnor
+        _ => 0
+    };
 
     public static class Buffs
     {
