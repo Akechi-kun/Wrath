@@ -172,7 +172,7 @@ internal partial class GNB
 
                     ImGui.Spacing();
 
-                    DrawBossOnlyChoice(GNB_ST_Balance_Content);
+                    DrawBossOnlyChoice(GNB_ST_Balance_Content, fixNoLineBreak:true);
                     break;
 
 
