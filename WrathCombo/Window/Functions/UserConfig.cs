@@ -1385,8 +1385,12 @@ namespace WrathCombo.Window.Functions
         /// <param name="overrideText">
         ///     Optional text to override the default description.
         /// </param>
+        /// <param name="fixNoLineBreak">
+        ///     Optional extra linebreak, if placed after other elements.
+        ///     <!--This is a workaround for the changes to DrawHorizontalRadioButton-->
+        /// </param>
         /// <seealso cref="ContentCheck.IsInBossOnlyContent"/>
-        internal static void DrawBossOnlyChoice(UserBoolArray config, string overrideText = "")
+        internal static void DrawBossOnlyChoice(UserBoolArray config, string overrideText = "", bool fixNoLineBreak = false)
         {
             using (ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.DalamudYellow))
             {
@@ -1394,6 +1398,9 @@ namespace WrathCombo.Window.Functions
                     ? "Select what kind of content this option applies to:"
                     : overrideText);
             }
+
+            if (fixNoLineBreak)
+                ImGui.NewLine();
 
             DrawHorizontalBoolRadioButton(
                 config, "All Content",
@@ -1429,8 +1436,12 @@ namespace WrathCombo.Window.Functions
         /// <param name="overrideText">
         ///     Optional text to override the default description.
         /// </param>
+        /// <param name="fixNoLineBreak">
+        ///     Optional extra linebreak, if placed after other elements.
+        ///     <!--This is a workaround for the changes to DrawHorizontalRadioButton-->
+        /// </param>
         /// <seealso cref="ContentCheck.IsInBossOnlyContent"/>
-        internal static void DrawBossOnlyChoice(UserInt config, string overrideText = "")
+        internal static void DrawBossOnlyChoice(UserInt config, string overrideText = "", bool fixNoLineBreak = false)
         {
             using (ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.DalamudYellow))
             {
@@ -1439,6 +1450,9 @@ namespace WrathCombo.Window.Functions
                     ? "Select what kind of content this option applies to:"
                     : overrideText);
             }
+
+            if (fixNoLineBreak)
+                ImGui.NewLine();
 
             DrawHorizontalRadioButton(
                 config, "All Content",
