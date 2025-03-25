@@ -35,7 +35,7 @@ internal partial class AST
         if (ActionWatching.CombatActions.Count == 0)
             return 0;
 
-        uint spellToCheck = Gauge.ActiveDraw == DrawType.ASTRAL ? UmbralDraw : AstralDraw;
+        uint spellToCheck = Gauge.ActiveDraw == DrawType.Astral ? UmbralDraw : AstralDraw;
         int idx = ActionWatching.CombatActions.LastIndexOf(spellToCheck);
         if (idx == -1)
             idx = 0;
@@ -82,7 +82,7 @@ internal partial class AST
                 QuickTargetCards.Invoke();
         }
 
-        if (DrawnCard == CardType.NONE)
+        if (DrawnCard == CardType.None)
             QuickTargetCards.SelectedRandomMember = null;
     }
 
@@ -94,8 +94,8 @@ internal partial class AST
             return true;
 
         IBattleChara? m = QuickTargetCards.SelectedRandomMember as IBattleChara;
-        if (DrawnCard is CardType.BALANCE && CustomComboFunctions.JobIDs.Melee.Any(x => x == m.ClassJob.RowId) ||
-            DrawnCard is CardType.SPEAR && CustomComboFunctions.JobIDs.Ranged.Any(x => x == m.ClassJob.RowId))
+        if (DrawnCard is CardType.Balance && CustomComboFunctions.JobIDs.Melee.Any(x => x == m.ClassJob.RowId) ||
+            DrawnCard is CardType.Spear && CustomComboFunctions.JobIDs.Ranged.Any(x => x == m.ClassJob.RowId))
             return false;
 
         List<IBattleChara> targets = new();
@@ -130,8 +130,8 @@ internal partial class AST
 
         if (targets.Count == 0)
             return false;
-        if (DrawnCard is CardType.BALANCE && targets.Any(x => CustomComboFunctions.JobIDs.Melee.Any(y => y == x.ClassJob.RowId)) ||
-            DrawnCard is CardType.SPEAR && targets.Any(x => CustomComboFunctions.JobIDs.Ranged.Any(y => y == x.ClassJob.RowId)))
+        if (DrawnCard is CardType.Balance && targets.Any(x => CustomComboFunctions.JobIDs.Melee.Any(y => y == x.ClassJob.RowId)) ||
+            DrawnCard is CardType.Spear && targets.Any(x => CustomComboFunctions.JobIDs.Ranged.Any(y => y == x.ClassJob.RowId)))
         {
             QuickTargetCards.SelectedRandomMember = null;
             return true;
@@ -150,7 +150,7 @@ internal partial class AST
 
         public static void Invoke()
         {
-            if (DrawnCard is not CardType.NONE)
+            if (DrawnCard is not CardType.None)
             {
                 if (GetPartySlot(2) is not null)
                 {
@@ -171,7 +171,7 @@ internal partial class AST
 
         private static bool SetTarget()
         {
-            if (Gauge.DrawnCards[0].Equals(CardType.NONE))
+            if (Gauge.DrawnCards[0].Equals(CardType.None))
                 return false;
             CardType cardDrawn = Gauge.DrawnCards[0];
             PartyTargets.Clear();
@@ -237,8 +237,8 @@ internal partial class AST
                 for(int i = 0; i <= PartyTargets.Count - 1; i++)
                 {
                     byte job = PartyTargets[i] is IBattleChara ? (byte)(PartyTargets[i] as IBattleChara).ClassJob.RowId : (byte)0;
-                    if (cardDrawn is CardType.BALANCE && JobIDs.Melee.Contains(job) ||
-                        cardDrawn is CardType.SPEAR && JobIDs.Ranged.Contains(job))
+                    if (cardDrawn is CardType.Balance && JobIDs.Melee.Contains(job) ||
+                        cardDrawn is CardType.Spear && JobIDs.Ranged.Contains(job))
                     {
                         //TargetObject(PartyTargets[i]);
                         SelectedRandomMember = PartyTargets[i];
@@ -249,8 +249,8 @@ internal partial class AST
                 for(int i = 0; i <= PartyTargets.Count - 1; i++)
                 {
                     byte job = PartyTargets[i] is IBattleChara ? (byte)(PartyTargets[i] as IBattleChara).ClassJob.RowId : (byte)0;
-                    if (cardDrawn is CardType.BALANCE && JobIDs.Ranged.Contains(job) ||
-                        cardDrawn is CardType.SPEAR && JobIDs.Melee.Contains(job))
+                    if (cardDrawn is CardType.Balance && JobIDs.Ranged.Contains(job) ||
+                        cardDrawn is CardType.Spear && JobIDs.Melee.Contains(job))
                     {
                         //TargetObject(PartyTargets[i]);
                         SelectedRandomMember = PartyTargets[i];
@@ -264,8 +264,8 @@ internal partial class AST
                     for(int i = 0; i <= PartyTargets.Count - 1; i++)
                     {
                         byte job = PartyTargets[i] is IBattleChara ? (byte)(PartyTargets[i] as IBattleChara).ClassJob.RowId : (byte)0;
-                        if (cardDrawn is CardType.BALANCE && JobIDs.Tank.Contains(job) ||
-                            cardDrawn is CardType.SPEAR && JobIDs.Healer.Contains(job))
+                        if (cardDrawn is CardType.Balance && JobIDs.Tank.Contains(job) ||
+                            cardDrawn is CardType.Spear && JobIDs.Healer.Contains(job))
                         {
                             //TargetObject(PartyTargets[i]);
                             SelectedRandomMember = PartyTargets[i];

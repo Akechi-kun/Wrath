@@ -284,7 +284,7 @@ namespace WrathCombo.CustomComboNS.Functions
             if (IsInRange(target)) SetTarget(target);
         }
 
-        public unsafe static GameObject* GetTarget(TargetType target)
+        public static unsafe GameObject* GetTarget(TargetType target)
         {
             IGameObject? o = null;
 
@@ -367,27 +367,30 @@ namespace WrathCombo.CustomComboNS.Functions
             if (CurrentTarget is not IBattleChara || CurrentTarget.ObjectKind != ObjectKind.BattleNpc)
                 return 0;
 
-            var angle = PositionalMath.AngleXZ(CurrentTarget.Position, LocalPlayer.Position) - CurrentTarget.Rotation;
+            float angle = PositionalMath.AngleXZ(CurrentTarget.Position, LocalPlayer.Position) - CurrentTarget.Rotation;
 
-            var regionDegrees = PositionalMath.Degrees(angle);
+            double regionDegrees = PositionalMath.Degrees(angle);
             if (regionDegrees < 0)
             {
                 regionDegrees = 360 + regionDegrees;
             }
 
-            if ((regionDegrees >= 45) && (regionDegrees <= 135))
+            if (regionDegrees is >= 45 and <= 135)
             {
                 return 1;
             }
-            if ((regionDegrees >= 135) && (regionDegrees <= 225))
+            
+            if (regionDegrees is >= 135 and <= 225)
             {
                 return 2;
             }
-            if ((regionDegrees >= 225) && (regionDegrees <= 315))
+            
+            if (regionDegrees is >= 225 and <= 315)
             {
                 return 3;
             }
-            if ((regionDegrees >= 315) || (regionDegrees <= 45))
+            
+            if (regionDegrees is >= 315 or <= 45)
             {
                 return 4;
             }
@@ -405,18 +408,19 @@ namespace WrathCombo.CustomComboNS.Functions
             if (CurrentTarget is not IBattleChara || CurrentTarget.ObjectKind != ObjectKind.BattleNpc)
                 return false;
 
-            var angle = PositionalMath.AngleXZ(CurrentTarget.Position, LocalPlayer.Position) - CurrentTarget.Rotation;
+            float angle = PositionalMath.AngleXZ(CurrentTarget.Position, LocalPlayer.Position) - CurrentTarget.Rotation;
 
-            var regionDegrees = PositionalMath.Degrees(angle);
+            double regionDegrees = PositionalMath.Degrees(angle);
             if (regionDegrees < 0)
             {
                 regionDegrees = 360 + regionDegrees;
             }
 
-            if ((regionDegrees >= 135) && (regionDegrees <= 225))
+            if (regionDegrees is >= 135 and <= 225)
             {
                 return true;
             }
+            
             return false;
         }
 
@@ -432,21 +436,22 @@ namespace WrathCombo.CustomComboNS.Functions
                 return false;
 
 
-            var angle = PositionalMath.AngleXZ(CurrentTarget.Position, LocalPlayer.Position) - CurrentTarget.Rotation;
+            float angle = PositionalMath.AngleXZ(CurrentTarget.Position, LocalPlayer.Position) - CurrentTarget.Rotation;
 
-            var regionDegrees = PositionalMath.Degrees(angle);
+            double regionDegrees = PositionalMath.Degrees(angle);
             if (regionDegrees < 0)
             {
                 regionDegrees = 360 + regionDegrees;
             }
 
             // left flank
-            if ((regionDegrees >= 45) && (regionDegrees <= 135))
+            if (regionDegrees is >= 45 and <= 135)
             {
                 return true;
             }
+            
             // right flank
-            if ((regionDegrees >= 225) && (regionDegrees <= 315))
+            if (regionDegrees is >= 225 and <= 315)
             {
                 return true;
             }
@@ -456,25 +461,25 @@ namespace WrathCombo.CustomComboNS.Functions
         // the following is all lifted from the excellent Resonant plugin
         internal static class PositionalMath
         {
-            static internal float Radians(float degrees)
+            internal static float Radians(float degrees)
             {
                 return (float)Math.PI * degrees / 180.0f;
             }
 
-            static internal double Degrees(float radians)
+            internal static double Degrees(float radians)
             {
                 return (180 / Math.PI) * radians;
             }
 
-            static internal float AngleXZ(Vector3 a, Vector3 b)
+            internal static float AngleXZ(Vector3 a, Vector3 b)
             {
                 return (float)Math.Atan2(b.X - a.X, b.Z - a.Z);
             }
         }
 
-        internal unsafe static bool OutOfRange(uint actionID, IGameObject target) => ActionWatching.OutOfRange(actionID, Svc.ClientState.LocalPlayer!, target);
+        internal static bool OutOfRange(uint actionID, IGameObject target) => ActionWatching.OutOfRange(actionID, Svc.ClientState.LocalPlayer!, target);
 
-        public unsafe static bool EnemiesInRange(uint spellCheck)
+        public static unsafe bool EnemiesInRange(uint spellCheck)
         {
             var enemies = Svc.Objects.Where(x => x.ObjectKind == ObjectKind.BattleNpc).Cast<IBattleNpc>().Where(x => x.BattleNpcKind is BattleNpcSubKind.Enemy or BattleNpcSubKind.BattleNpcPart).ToList();
             foreach (var enemy in enemies)
@@ -494,7 +499,7 @@ namespace WrathCombo.CustomComboNS.Functions
             return false;
         }
 
-        public unsafe static int NumberOfEnemiesInRange(uint aoeSpell, IGameObject? target, bool checkIgnoredList = false)
+        public static int NumberOfEnemiesInRange(uint aoeSpell, IGameObject? target, bool checkIgnoredList = false)
         {
             ActionWatching.ActionSheet.Values.TryGetFirst(x => x.RowId == aoeSpell, out var sheetSpell);
             bool needsTarget = sheetSpell.CanTargetHostile;
@@ -628,7 +633,7 @@ namespace WrathCombo.CustomComboNS.Functions
         public static int CanConeAoe(IGameObject? target, float range, float effectRange, bool checkIgnoredList = false)
         {
             if (target is null) return 0;
-            var dir = PositionalMath.AngleXZ(LocalPlayer.Position, target.Position);
+            float dir = PositionalMath.AngleXZ(LocalPlayer.Position, target.Position);
             return Svc.Objects.Count(o => o.ObjectKind == ObjectKind.BattleNpc &&
                                                                  o.IsHostile() &&
                                                                  o.IsTargetable &&
@@ -642,7 +647,7 @@ namespace WrathCombo.CustomComboNS.Functions
         public static int CanLineAoe(IGameObject? target, float range, float effectRange, bool checkIgnoredList = false)
         {
             if (target is null) return 0;
-            var dir = PositionalMath.AngleXZ(LocalPlayer.Position, target.Position);
+            float dir = PositionalMath.AngleXZ(LocalPlayer.Position, target.Position);
             return Svc.Objects.Count(o => o.ObjectKind == ObjectKind.BattleNpc &&
                                                                  o.IsHostile() &&
                                                                  o.IsTargetable &&
@@ -665,7 +670,7 @@ namespace WrathCombo.CustomComboNS.Functions
             targetPos.Y += 2;
 
             var direction = targetPos - sourcePos;
-            var distance = direction.Magnitude;
+            float distance = direction.Magnitude;
 
             direction = direction.Normalized;
 
@@ -673,8 +678,8 @@ namespace WrathCombo.CustomComboNS.Functions
             Vector3 directionVect = new Vector3(direction.X, direction.Y, direction.Z);
 
             RaycastHit hit;
-            var flags = stackalloc int[] { 0x4000, 0, 0x4000, 0 };
-            var isLoSBlocked = Framework.Instance()->BGCollisionModule->RaycastMaterialFilter(&hit, &originVect, &directionVect, distance, 1, flags);
+            int* flags = stackalloc int[] { 0x4000, 0, 0x4000, 0 };
+            bool isLoSBlocked = Framework.Instance()->BGCollisionModule->RaycastMaterialFilter(&hit, &originVect, &directionVect, distance, 1, flags);
 
             return isLoSBlocked == false;
         }

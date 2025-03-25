@@ -60,9 +60,9 @@ internal partial class SAM
 
     private static int GetNumSen()
     {
-        bool ka = Gauge.Sen.HasFlag(Sen.KA);
-        bool getsu = Gauge.Sen.HasFlag(Sen.GETSU);
-        bool setsu = Gauge.Sen.HasFlag(Sen.SETSU);
+        bool ka = Gauge.Sen.HasFlag(Sen.Ka);
+        bool getsu = Gauge.Sen.HasFlag(Sen.Getsu);
+        bool setsu = Gauge.Sen.HasFlag(Sen.Setsu);
 
         return (ka ? 1 : 0) + (getsu ? 1 : 0) + (setsu ? 1 : 0);
     }

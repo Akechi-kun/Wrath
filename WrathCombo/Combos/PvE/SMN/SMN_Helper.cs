@@ -181,7 +181,7 @@ internal partial class SMN
     {
         get
         {
-            if (Gauge.SummonTimerRemaining > 0 && Gauge.AttunmentTimerRemaining == 0)
+            if (Gauge.SummonTimerRemaining > 0 && Gauge.AttunementTimerRemaining == 0)
             {
                 if (IsDreadwyrmTranceReady) return DemiSummon.Dreadwyrm;
                 if (IsBahamutReady) return DemiSummon.Bahamut;

@@ -11,9 +11,9 @@ namespace WrathCombo.Combos.PvE;
 internal partial class BRD : PhysRangedJob
 {
     #region Song status
-    internal static bool SongIsNotNone(Song value) => value != Song.NONE;
-    internal static bool SongIsNone(Song value) => value == Song.NONE;
-    internal static bool SongIsWandererMinuet(Song value) => value == Song.WANDERER;
+    internal static bool SongIsNotNone(Song value) => value != Song.None;
+    internal static bool SongIsNone(Song value) => value == Song.None;
+    internal static bool SongIsWandererMinuet(Song value) => value == Song.Wanderer;
     #endregion
 
     #region Smaller features
@@ -141,8 +141,8 @@ internal partial class BRD : PhysRangedJob
                 return actionID;
 
             BRDGauge? gauge = GetJobGauge<BRDGauge>();
-            bool songArmy = gauge.Song == Song.ARMY;
-            bool songWanderer = gauge.Song == Song.WANDERER;
+            bool songArmy = gauge.Song == Song.Army;
+            bool songWanderer = gauge.Song == Song.Wanderer;
 
             if (IsEnabled(CustomComboPreset.BRD_AoE_oGCD_Songs) && (gauge.SongTimer < 1 || songArmy))
             {
@@ -177,8 +177,8 @@ internal partial class BRD : PhysRangedJob
                 return actionID;
 
             BRDGauge? gauge = GetJobGauge<BRDGauge>();
-            bool songArmy = gauge.Song == Song.ARMY;
-            bool songWanderer = gauge.Song == Song.WANDERER;
+            bool songArmy = gauge.Song == Song.Army;
+            bool songWanderer = gauge.Song == Song.Wanderer;
 
             if (IsEnabled(CustomComboPreset.BRD_ST_oGCD_Songs) && (gauge.SongTimer < 1 || songArmy))
             {
@@ -262,13 +262,13 @@ internal partial class BRD : PhysRangedJob
             BRDGauge? gauge = GetJobGauge<BRDGauge>();
             int songTimerInSeconds = gauge.SongTimer / 1000;
 
-            if (ActionReady(WanderersMinuet) || (gauge.Song == Song.WANDERER && songTimerInSeconds > 11))
+            if (ActionReady(WanderersMinuet) || (gauge.Song == Song.Wanderer && songTimerInSeconds > 11))
                 return WanderersMinuet;
 
-            if (ActionReady(MagesBallad) || (gauge.Song == Song.MAGE && songTimerInSeconds > 2))
+            if (ActionReady(MagesBallad) || (gauge.Song == Song.Mage && songTimerInSeconds > 2))
                 return MagesBallad;
 
-            if (ActionReady(ArmysPaeon) || (gauge.Song == Song.ARMY && songTimerInSeconds > 2))
+            if (ActionReady(ArmysPaeon) || (gauge.Song == Song.Army && songTimerInSeconds > 2))
                 return ArmysPaeon;
 
             return actionID;
@@ -290,10 +290,10 @@ internal partial class BRD : PhysRangedJob
             bool canWeave = CanWeave() && !ActionWatching.HasDoubleWeaved();
             bool canWeaveDelayed = CanDelayedWeave(0.9) && !ActionWatching.HasDoubleWeaved();
             int songTimerInSeconds = gauge.SongTimer / 1000;
-            bool songNone = gauge.Song == Song.NONE;
-            bool songWanderer = gauge.Song == Song.WANDERER;
-            bool songMage = gauge.Song == Song.MAGE;
-            bool songArmy = gauge.Song == Song.ARMY;
+            bool songNone = gauge.Song == Song.None;
+            bool songWanderer = gauge.Song == Song.Wanderer;
+            bool songMage = gauge.Song == Song.Mage;
+            bool songArmy = gauge.Song == Song.Army;
             int targetHPThreshold = PluginConfiguration.GetCustomIntValue(Config.BRD_AoENoWasteHPPercentage);
             bool isEnemyHealthHigh = !IsEnabled(CustomComboPreset.BRD_AoE_Adv_NoWaste) || GetTargetHPPercent() > targetHPThreshold;
             bool hasTarget = HasBattleTarget();
@@ -538,10 +538,10 @@ internal partial class BRD : PhysRangedJob
             BRDGauge? gauge = GetJobGauge<BRDGauge>();
             bool canWeave = CanWeave() && !ActionWatching.HasDoubleWeaved();
             bool canWeaveDelayed = CanDelayedWeave(0.9) && !ActionWatching.HasDoubleWeaved();
-            bool songNone = gauge.Song == Song.NONE;
-            bool songWanderer = gauge.Song == Song.WANDERER;
-            bool songMage = gauge.Song == Song.MAGE;
-            bool songArmy = gauge.Song == Song.ARMY;
+            bool songNone = gauge.Song == Song.None;
+            bool songWanderer = gauge.Song == Song.Wanderer;
+            bool songMage = gauge.Song == Song.Mage;
+            bool songArmy = gauge.Song == Song.Army;
             int songTimerInSeconds = gauge.SongTimer / 1000;
             int targetHPThreshold = PluginConfiguration.GetCustomIntValue(Config.BRD_NoWasteHPPercentage);
             bool isEnemyHealthHigh = !IsEnabled(CustomComboPreset.BRD_Adv_NoWaste) || GetTargetHPPercent() > targetHPThreshold;
@@ -840,10 +840,10 @@ internal partial class BRD : PhysRangedJob
             bool canWeave = CanWeave() && !ActionWatching.HasDoubleWeaved();
             bool canWeaveDelayed = CanDelayedWeave(0.9) && !ActionWatching.HasDoubleWeaved();
             int songTimerInSeconds = gauge.SongTimer / 1000;
-            bool songNone = gauge.Song == Song.NONE;
-            bool songWanderer = gauge.Song == Song.WANDERER;
-            bool songMage = gauge.Song == Song.MAGE;
-            bool songArmy = gauge.Song == Song.ARMY;
+            bool songNone = gauge.Song == Song.None;
+            bool songWanderer = gauge.Song == Song.Wanderer;
+            bool songMage = gauge.Song == Song.Mage;
+            bool songArmy = gauge.Song == Song.Army;
             int targetHPThreshold = PluginConfiguration.GetCustomIntValue(Config.BRD_AoENoWasteHPPercentage);
             bool isEnemyHealthHigh = GetTargetHPPercent() > 5;
             bool hasTarget = HasBattleTarget();
@@ -1060,10 +1060,10 @@ internal partial class BRD : PhysRangedJob
             BRDGauge? gauge = GetJobGauge<BRDGauge>();
             bool canWeave = CanWeave() && !ActionWatching.HasDoubleWeaved();
             bool canWeaveDelayed = CanDelayedWeave(0.9) && !ActionWatching.HasDoubleWeaved();
-            bool songNone = gauge.Song == Song.NONE;
-            bool songWanderer = gauge.Song == Song.WANDERER;
-            bool songMage = gauge.Song == Song.MAGE;
-            bool songArmy = gauge.Song == Song.ARMY;
+            bool songNone = gauge.Song == Song.None;
+            bool songWanderer = gauge.Song == Song.Wanderer;
+            bool songMage = gauge.Song == Song.Mage;
+            bool songArmy = gauge.Song == Song.Army;
             bool isEnemyHealthHigh = GetTargetHPPercent() > 1;
             int songTimerInSeconds = gauge.SongTimer / 1000;
             bool hasTarget = HasBattleTarget();

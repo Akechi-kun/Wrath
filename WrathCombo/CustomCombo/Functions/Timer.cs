@@ -27,11 +27,11 @@ namespace WrathCombo.CustomComboNS.Functions
         /// <returns> Combat time in seconds. </returns>
         public static TimeSpan CombatEngageDuration() => InCombat() ? DateTime.Now - combatStart : TimeSpan.Zero;
 
-        public unsafe static TimeSpan PartyEngageDuration() => partyInCombat ? DateTime.Now - partyCombat : TimeSpan.Zero;
+        public static TimeSpan PartyEngageDuration() => partyInCombat ? DateTime.Now - partyCombat : TimeSpan.Zero;
 
-        public unsafe static TimeSpan TimeSpentDead(ulong partyMemberObjectId) => TimeSpentDead((uint)partyMemberObjectId);
+        public static TimeSpan TimeSpentDead(ulong partyMemberObjectId) => TimeSpentDead((uint)partyMemberObjectId);
 
-        public unsafe static TimeSpan TimeSpentDead(uint partyMemberObjectId) => Deadtionary.ContainsKey(partyMemberObjectId) ? TimeSpan.FromMilliseconds((Environment.TickCount64 - Deadtionary[partyMemberObjectId])) : TimeSpan.Zero;
+        public static TimeSpan TimeSpentDead(uint partyMemberObjectId) => Deadtionary.ContainsKey(partyMemberObjectId) ? TimeSpan.FromMilliseconds((Environment.TickCount64 - Deadtionary[partyMemberObjectId])) : TimeSpan.Zero;
 
         public static void TimerSetup()
         {
@@ -41,14 +41,14 @@ namespace WrathCombo.CustomComboNS.Functions
             Svc.Framework.Update += CheckInterruptedCasts;
         }
 
-        private unsafe  static void CheckInterruptedCasts(IFramework framework)
+        private static void CheckInterruptedCasts(IFramework framework)
         {
             if (Player.Available && Player.Object.CurrentCastTime > 0)
             {
                 if (castFinishedAt is null)
                 {
                     castId = Player.Object.CastActionId;
-                    var timeLeft = ((Player.Object.TotalCastTime - Player.Object.CurrentCastTime) * 1000f) - 500f;
+                    float timeLeft = ((Player.Object.TotalCastTime - Player.Object.CurrentCastTime) * 1000f) - 500f;
                     castFinishedAt = DateTime.Now + TimeSpan.FromMilliseconds(timeLeft);
                 }
 
@@ -84,7 +84,7 @@ namespace WrathCombo.CustomComboNS.Functions
             }
         }
 
-        private unsafe static void UpdatePartyTimer(IFramework framework)
+        private static unsafe void UpdatePartyTimer(IFramework framework)
         {
             if (!Player.Available) return;
             if (GetPartyMembers().Any(x => x.BattleChara.Struct()->InCombat) && !partyInCombat)
@@ -112,9 +112,9 @@ namespace WrathCombo.CustomComboNS.Functions
                 combatStart = DateTime.Now;
         }
 
-        public unsafe static float CountdownRemaining => MathF.Max(0, AgentCountDownSettingDialog.Instance()->TimeRemaining);
+        public static unsafe float CountdownRemaining => MathF.Max(0, AgentCountDownSettingDialog.Instance()->TimeRemaining);
 
-        public unsafe static bool CountdownActive => AgentCountDownSettingDialog.Instance()->Active;
+        public static unsafe bool CountdownActive => AgentCountDownSettingDialog.Instance()->Active;
        
     }
 }

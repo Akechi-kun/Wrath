@@ -21,9 +21,9 @@ namespace WrathCombo.CustomComboNS.Functions
 
         /// <summary> Gets the party list </summary>
         /// <returns> Current party list. </returns>
-        public unsafe static List<WrathPartyMember> GetPartyMembers()
+        public static unsafe List<WrathPartyMember> GetPartyMembers()
         {
-            if (!Player.Available) return new();
+            if (!Player.Available) return [];
             if (!EzThrottler.Throttle("PartyUpdateThrottle", 2000))
                 return _partyList;
 
@@ -74,7 +74,7 @@ namespace WrathCombo.CustomComboNS.Functions
 
         private static List<WrathPartyMember> _partyList = new();
 
-        public unsafe static IGameObject? GetPartySlot(int slot)
+        public static unsafe IGameObject? GetPartySlot(int slot)
         {
             try
             {

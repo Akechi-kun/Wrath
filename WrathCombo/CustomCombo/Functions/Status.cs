@@ -18,10 +18,10 @@ namespace WrathCombo.CustomComboNS.Functions
         /// <returns> A value indicating if the effect exists. </returns>
         public static bool HasEffect(ushort effectID) => FindEffect(effectID) is not null;
 
-        public static byte GetBuffStacks(ushort effectId)
+        public static ushort GetBuffStacks(ushort effectId)
         {
             Status? eff = FindEffect(effectId);
-            return eff?.StackCount ?? 0;
+            return eff?.Param ?? 0;
         }
 
         /// <summary> Gets the duration of a status effect on the player. By default, the effect must be owned by the player or unowned. </summary>
@@ -58,7 +58,7 @@ namespace WrathCombo.CustomComboNS.Functions
         /// <param name="effectId"> Status effect ID. </param>
         /// <param name="isPlayerOwned"> Whether the status effect must be owned by the player or can be owned by anyone. </param>
         /// <returns> The duration of the status effect. </returns>
-        public unsafe static float GetDebuffRemainingTime(ushort effectId, bool isPlayerOwned = true)
+        public static unsafe float GetDebuffRemainingTime(ushort effectId, bool isPlayerOwned = true)
         {
             Status? eff = (isPlayerOwned == true)
                 ? FindTargetEffect(effectId)

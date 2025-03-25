@@ -479,7 +479,7 @@ internal partial class SMN : CasterJob
             }
 
             // Ruin 4
-            if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_Ruin4) && LevelChecked(Ruin4) && Gauge.SummonTimerRemaining == 0 && Gauge.AttunmentTimerRemaining == 0 && HasEffect(Buffs.FurtherRuin))
+            if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_Ruin4) && LevelChecked(Ruin4) && Gauge.SummonTimerRemaining == 0 && Gauge.AttunementTimerRemaining == 0 && HasEffect(Buffs.FurtherRuin))
                 return Ruin4;
 
             return actionID;
@@ -662,7 +662,7 @@ internal partial class SMN : CasterJob
             }
 
             // Ruin 4
-            if (IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_Ruin4) && LevelChecked(Ruin4) && Gauge.SummonTimerRemaining == 0 && Gauge.AttunmentTimerRemaining == 0 && HasEffect(Buffs.FurtherRuin))
+            if (IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_Ruin4) && LevelChecked(Ruin4) && Gauge.SummonTimerRemaining == 0 && Gauge.AttunementTimerRemaining == 0 && HasEffect(Buffs.FurtherRuin))
                 return Ruin4;
 
             return actionID;
