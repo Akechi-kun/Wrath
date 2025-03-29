@@ -47,6 +47,7 @@ internal partial class PLD
             PLD_Balance_Content = new("PLD_Balance_Content", 1),
             PLD_ST_MitsOptions = new("PLD_ST_MitsOptions", 0),
             PLD_AoE_MitsOptions = new("PLD_AoE_MitsOptions", 0),
+            PLD_ST_GoringBlade_SubOption = new("PLD_ST_GoringBlade_SubOption", 0),
 
             //One-Button Mitigation
             PLD_Mit_HallowedGround_Max_Health = new("PLD_Mit_HallowedGround_Max_Health", 20),
@@ -231,11 +232,11 @@ internal partial class PLD
 
                 // Requiescat Spender Feature
                 case CustomComboPreset.PLD_Requiescat_Options:
-                    UserConfig.DrawHorizontalRadioButton(PLD_Requiescat_SubOption, "Normal Behavior",
-                        "", 1);
+                    UserConfig.DrawHorizontalRadioButton(PLD_Requiescat_SubOption, "Exclude Fight or Flight",
+                        "Excludes both Fight or Flight and Goring Blade from this feature.", 1);
 
-                    UserConfig.DrawHorizontalRadioButton(PLD_Requiescat_SubOption, "Add Fight or Flight",
-                        "Adds Fight or Flight to the normal logic.\n- Requires Resquiescat to be ready.", 2);
+                    UserConfig.DrawHorizontalRadioButton(PLD_Requiescat_SubOption, "Include Fight or Flight",
+                        "Includes both Fight or Flight and Goring Blade into this feature.\n- Requires Resquiescat to be ready.\n- Will use Goring Blade immediately after Fight or Flight.", 2);
 
                     break;
 
@@ -275,6 +276,17 @@ internal partial class PLD
                     UserConfig.DrawHorizontalRadioButton(PLD_AoE_MitsOptions,
                         "Exclude Mitigations",
                         "Disables the use of mitigations in Simple Mode.", 1);
+                    break;
+
+                // Goring Blade Sub-Option
+                case CustomComboPreset.PLD_ST_AdvancedMode_GoringBlade:
+                    UserConfig.DrawHorizontalRadioButton(PLD_ST_GoringBlade_SubOption,
+                        "Early Goring Blade",
+                        "Will use Goring Blade as soon as possible in burst.", 0);
+                    UserConfig.DrawHorizontalRadioButton(PLD_ST_GoringBlade_SubOption,
+                        "Late Goring Blade",
+                        "Will use Goring Blade after Requiescat stacks are spent.\n" +
+                        "NOTE: This will use Goring Blade immediately if Requiescat is misaligned with Fight or Flight", 1);
                     break;
 
                 #region One-Button Mitigation
