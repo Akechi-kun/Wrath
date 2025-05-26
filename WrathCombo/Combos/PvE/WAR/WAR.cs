@@ -1,7 +1,5 @@
-using System;
 using System.Linq;
 using WrathCombo.CustomComboNS;
-using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
 namespace WrathCombo.Combos.PvE;
 
@@ -15,7 +13,6 @@ internal partial class WAR : Tank
         {
             if (action != HeavySwing)
                 return action;
-
             if (ShouldUseOther)
                 return OtherAction;
 
@@ -142,14 +139,14 @@ internal partial class WAR : Tank
                 return PrimalWrath;
             if (IsEnabled(CustomComboPreset.WAR_ST_Onslaught) && ShouldUseOnslaught(Config.WAR_ST_Onslaught_Charges, Config.WAR_ST_Onslaught_Distance, Config.WAR_ST_Onslaught_Movement == 1 || (Config.WAR_ST_Onslaught_Movement == 0 && !IsMoving())))
                 return Onslaught;
-            if (IsEnabled(CustomComboPreset.WAR_ST_FellCleave) && ShouldUseFellCleave(Config.WAR_ST_FellCleave_Gauge))
-                return OriginalHook(InnerBeast);
             if (IsEnabled(CustomComboPreset.WAR_ST_PrimalRend) && 
                 ShouldUsePrimalRend(Config.WAR_ST_PrimalRend_Distance, Config.WAR_ST_PrimalRend_Movement == 1 || (Config.WAR_ST_PrimalRend_Movement == 0 && !IsMoving())) &&
                 (Config.WAR_ST_PrimalRend_EarlyLate == 0 || (Config.WAR_ST_PrimalRend_EarlyLate == 1 && (GetStatusEffectRemainingTime(Buffs.PrimalRendReady) <= 15 || (!HasIR.Stacks && !HasBF.Stacks && !HasWrath)))))
                 return PrimalRend;
             if (IsEnabled(CustomComboPreset.WAR_ST_PrimalRuination) && ShouldUsePrimalRuination)
                 return PrimalRuination;
+            if (IsEnabled(CustomComboPreset.WAR_ST_FellCleave) && ShouldUseFellCleave(Config.WAR_ST_FellCleave_Gauge))
+                return OriginalHook(InnerBeast);
             return STCombo;
             #endregion
         }

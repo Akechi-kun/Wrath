@@ -2453,7 +2453,7 @@ public enum CustomComboPreset
     GNB_Mit_Nebula = 7083,
 
     [ReplaceSkill(GNB.HeartOfLight)]
-    [CustomComboInfo("One-Button Mitigation Party Feature", "Replaces Heart of Light with Reprisal when ready.", GNB.JobID)]
+    [CustomComboInfo("One-Button Mitigation Party Feature", "Replaces Heart of Light with Reprisal when ready.", WAR.JobID)]
     GNB_Mit_Party = 7085,
     #endregion
 

@@ -1,14 +1,9 @@
 ﻿#region Dependencies
 using Dalamud.Game.ClientState.JobGauge.Types;
-using Dalamud.Game.ClientState.Objects.Types;
-using ECommons.GameFunctions;
-using System;
 using System.Collections.Generic;
 using WrathCombo.Combos.PvE.Content;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
-using static FFXIVClientStructs.FFXIV.Client.System.Resource.Handle.MaterialResourceHandle.Delegates;
-using static FFXIVClientStructs.FFXIV.Component.GUI.AtkResNode.Delegates;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 using PartyRequirement = WrathCombo.Combos.PvE.All.Enums.PartyRequirement;
 #endregion
@@ -21,15 +16,11 @@ internal partial class WAR : Tank
     internal static WARGauge Gauge = GetJobGauge<WARGauge>(); //WAR gauge
     internal static int BeastGauge => Gauge.BeastGauge;
     internal static int MaxDashCharges => TraitLevelChecked(Traits.EnhancedOnslaught) ? 3 : LevelChecked(Onslaught) ? 2 : 0;
-    internal static float NCleft => GetStatusEffectRemainingTime(Buffs.NascentChaos);
-    internal static float PRleft => GetStatusEffectRemainingTime(Buffs.PrimalRendReady);
-    internal static float BurstWindowLeft => IR.CD >= 40 ? 2.5f : 0;
-    internal static (float CD, float ChargeCD, int Charges, int CDReduction, float Leeway) Inf => (GetCooldownRemainingTime(Infuriate), TraitLevelChecked(Traits.EnhancedInfuriate) ? GetCooldownChargeRemainingTime(Infuriate) : GetCooldownRemainingTime(Infuriate), (int)GetRemainingCharges(Infuriate), TraitLevelChecked(Traits.EnhancedInfuriate) ? 5 : 0, 0.6f);
-    internal static bool CanInfuriate(int gauge = 50, int charges = 0) => InCombat() && ActionReady(Infuriate);
+    internal static bool CanInfuriate(int gauge = 50, int charges = 0) => InCombat() && ActionReady(Infuriate) && !HasNC && GetRemainingCharges(Infuriate) > charges && BeastGauge <= gauge;
     internal static bool CanOnslaught(int charges = 0, float distance = 20, bool movement = true) => ActionReady(Onslaught) && GetRemainingCharges(Onslaught) > charges && GetTargetDistance() <= distance && movement;
     internal static bool CanPRend(float distance = 20, bool movement = true) => LevelChecked(PrimalRend) && HasStatusEffect(Buffs.PrimalRendReady) && GetTargetDistance() <= distance && movement;
-    internal static bool CanFC(int gauge = 50) => LevelChecked(OriginalHook(InnerBeast)) && (HasIR.Stacks || (BeastGauge >= 50 && ((HasNC && BeastGauge >= gauge && LevelChecked(InnerChaos)) || IR.CD is < 1f or > 40f)) || BeastGauge >= gauge);
-    internal static (float CD, float Status, int Stacks) IR => (GetCooldownRemainingTime(OriginalHook(Berserk)), GetStatusEffectRemainingTime(Buffs.InnerReleaseStacks), GetStatusEffectStacks(Buffs.InnerReleaseStacks));
+    internal static bool CanFC(int gauge = 50) => LevelChecked(OriginalHook(InnerBeast)) && (HasIR.Stacks || (BeastGauge >= 50 && ((HasNC && BeastGauge >= gauge && LevelChecked(InnerChaos)) || IR.Cooldown is < 1f or > 40f)) || BeastGauge >= gauge);
+    internal static (float Cooldown, float Status, int Stacks) IR => (GetCooldownRemainingTime(OriginalHook(Berserk)), GetStatusEffectRemainingTime(Buffs.InnerReleaseBuff), GetStatusEffectStacks(Buffs.InnerReleaseStacks));
     internal static (float Status, int Stacks) BF => (GetStatusEffectRemainingTime(Buffs.BurgeoningFury), GetStatusEffectStacks(Buffs.BurgeoningFury));
     internal static (bool Status, bool Stacks) HasIR => (IR.Status > 0, IR.Stacks > 0 || HasStatusEffect(Buffs.InnerReleaseStacks));
     internal static (bool Status, bool Stacks) HasBF => (BF.Status > 0 || HasStatusEffect(Buffs.BurgeoningFury), (BF.Stacks > 0 || HasStatusEffect(Buffs.BurgeoningFury)));
@@ -176,184 +167,17 @@ internal partial class WAR : Tank
         }
     }
     internal static bool ShouldUseOther => OtherAction != 0;
-    internal static bool CanFitGCD(float deadline, int extraGCDs = 0) => (RemainingGCD + (GetCooldown(HeavySwing).CooldownTotal * extraGCDs)) < deadline + 0.5f; // note: if deadline is 0 (meaning status not active etc), we can't fit a single gcd even if available immediately (GCD==0), so we use <
-    internal static bool OptimalInfuriate()
-    {
-        // === 1. Basic usage disqualification ===
-        if (!LevelChecked(Infuriate))
-            return false;
-
-        if (CanFitGCD(GetStatusEffectRemainingTime(Buffs.NascentChaos))) // Already have NC
-            return false;
-
-        if (!HasBattleTarget())
-            return false;
-
-        if (BeastGauge > 50)
-            return false;
-
-        bool hasIR = CanFitGCD(IR.Status);
-        bool canNC = LevelChecked(ChaoticCyclone);
-
-        // === 2. Pre-IR logic ===
-        if (!LevelChecked(InnerRelease))
-        {
-            // Before IR, use Infuriate under Berserk
-            if (hasIR)
-                return true;
-
-            // Don't delay if we're close to overcapping stacks
-            if (!CanFitGCD(Inf.CD + 0.5f, 4))
-                return true;
-
-            return false;
-        }
-
-        // === 3. Avoid overwriting IR stacks with Infuriate + NC ===
-        if (canNC && hasIR && !CanFitGCD(IR.Status + 0.5f, IR.Stacks))
-            return false;
-
-        // === 4. Prevent Infuriate overcap if delaying ===
-        double maxInfCD = RemainingGCD + Inf.Leeway;
-
-        if (BeastGauge + GaugeGainedFromAction() > 50)
-        {
-            int neededFCs = 1;
-            if (hasIR)
-                neededFCs += IR.Stacks;
-            else if (!CanFitGCD(IR.CD + 0.5f, 1))
-                neededFCs += 3;
-
-            maxInfCD += (GCDTotal + Inf.CDReduction) * neededFCs;
-        }
-        else if (JustUsed(FellCleave) || JustUsed(InnerBeast) || JustUsed(SteelCyclone) || JustUsed(Decimate))
-        {
-            maxInfCD += Inf.CDReduction;
-        }
-
-        if (Inf.CD < maxInfCD)
-            return true; // Will overcap if delayed
-
-        // === 5. Avoid using Infuriate under IR (burst management) ===
-        if (hasIR && canNC)
-            return false;
-
-        // === 6. Prevent overcap due to combo refresh when ST expiring ===
-        var (comboGaugeGain, comboGCDs) = ComboAction switch
-        {
-            HeavySwing => (20, 3),
-            Maim => (20, 2),
-            StormsEye => (10, 1),
-            Overpower => (20, 2),
-            MythrilTempest => (20, 1),
-            _ => (30, 4)
-        };
-
-        if (BeastGauge + comboGaugeGain > 100 &&
-            !CanFitGCD(GetStatusEffectRemainingTime(Buffs.SurgingTempest) + 0.5f, comboGCDs))
-        {
-            return false;
-        }
-
-        // === 7. Use Infuriate if under IR, delay otherwise ===
-        return hasIR;
-    }
-    internal static bool OptimalFellCleave()
-    {
-        // === 1. Prevent losing Nascent Chaos ===
-        bool hasNC = CanFitGCD(NCleft); // NC implies Infuriate used and 50+ gauge
-        if (hasNC)
-        {
-            bool prExpiringSoon = CanFitGCD(PRleft) && !CanFitGCD(PRleft, 2);
-            int allowedGCDs = prExpiringSoon ? 2 : 1;
-
-            if (!CanFitGCD(NCleft, allowedGCDs))
-                return true; // NC will expire before we can use it
-        }
-
-        // === 2. Prevent losing Inner Release stacks ===
-        bool underIR = CanFitGCD(IR.Status);
-        int totalIRStacks = IR.Stacks + (hasNC ? 1 : 0);
-        if (underIR && !CanFitGCD(IR.Status, totalIRStacks))
-            return true;
-
-        // === 3. Prevent Infuriate overcap (soon) ===
-        bool gaugeHigh = BeastGauge > 50;
-        bool mustSpendGauge = hasNC || gaugeHigh;
-        if (mustSpendGauge)
-        {
-            var timeToNextInf = Inf.CD - Inf.CDReduction - Inf.Leeway;
-            if (!CanFitGCD(timeToNextInf, 1))
-                return true;
-        }
-
-        // === 4. Prevent Infuriate overcap due to IR usage window ===
-        if (underIR)
-        {
-            int neededFCsBeforeInf = IR.Stacks + (mustSpendGauge ? 1 : 0);
-            var timeToSpendFCs = Inf.CD - Inf.CDReduction * neededFCsBeforeInf - Inf.Leeway;
-
-            if (!CanFitGCD(IR.Status, neededFCsBeforeInf + 1) &&
-                !CanFitGCD(timeToSpendFCs, neededFCsBeforeInf))
-            {
-                return true;
-            }
-        }
-
-        // === 5. Prevent Infuriate overcap if IR is imminent ===
-        int upcomingIRStacks = hasNC ? 4 : 3;
-        if (mustSpendGauge &&
-            !CanFitGCD(IR.CD, 1) &&
-            !CanFitGCD(Inf.CD - Inf.CDReduction * upcomingIRStacks - Inf.Leeway, upcomingIRStacks))
-        {
-            return true;
-        }
-
-        // === 6. Use FC during IR burst ===
-        if (underIR)
-            return true;
-
-        // === 7. Delay FC under IR if filler window exists ===
-        if (CanFitGCD(IR.Status))
-        {
-            int usableFillers = (int)((IR.Status - RemainingGCD) / GCDTotal) + 1 - totalIRStacks;
-            bool safeToDelay = usableFillers > 0 && !CanFitGCD(IR.CD, usableFillers);
-            return !safeToDelay;
-        }
-
-        // === 8. Delay NC if IR is coming soon ===
-        if (hasNC)
-        {
-            return NCleft <= IR.CD;
-        }
-
-        // === 9. Use FC to prevent overcap on next action ===
-        if (BeastGauge + GaugeGainedFromAction() == 100)
-            return true;
-
-        // === 10. Default: safe to delay Fell Cleave ===
-        return false;
-    }
-    internal static int GaugeGainedFromAction() => ComboAction switch
-    {
-        Maim or StormsEye => 10,
-        StormsPath => 20,
-        MythrilTempest => TraitLevelChecked(Traits.MasteringTheBeast) ? 20 : 0,
-        _ => 0
-    };
-
-
     #endregion
 
     #region Rotation
     internal static bool ShouldUseInnerRelease(int targetHP = 0) => ActionReady(OriginalHook(Berserk)) && !HasWrath && CanWeave() && (HasST || !LevelChecked(StormsEye)) && Minimal && GetTargetHPPercent() >= targetHP;
-    internal static bool ShouldUseInfuriate(int gauge = 40, int charges = 0) => CanInfuriate() && CanWeave() && OptimalInfuriate() && Minimal;
+    internal static bool ShouldUseInfuriate(int gauge = 40, int charges = 0) => CanInfuriate() && CanWeave() && !HasNC && !HasIR.Stacks && BeastGauge <= gauge && GetRemainingCharges(Infuriate) > charges && Minimal;
     internal static bool ShouldUseUpheaval => ActionReady(Upheaval) && CanWeave() && HasST && InMeleeRange() && Minimal;
     internal static bool ShouldUsePrimalWrath => LevelChecked(PrimalWrath) && HasWrath && HasST && GetTargetDistance() <= 4.99f && Minimal;
-    internal static bool ShouldUseOnslaught(int charges = 0, float distance = 20, bool movement = true) => CanOnslaught(charges, distance, movement) && CanWeave() && HasST && (IR.CD > 40 || GetRemainingCharges(Onslaught) == MaxDashCharges);
+    internal static bool ShouldUseOnslaught(int charges = 0, float distance = 20, bool movement = true) => CanOnslaught(charges, distance, movement) && CanWeave() && HasST && (IR.Cooldown > 40 || GetRemainingCharges(Onslaught) == MaxDashCharges);
     internal static bool ShouldUsePrimalRuination => LevelChecked(PrimalRuination) && HasStatusEffect(Buffs.PrimalRuinationReady) && HasST;
     internal static bool ShouldUsePrimalRend(float distance = 20, bool movement = true) => CanPRend(distance, movement) && !JustUsed(InnerRelease) && HasST;
-    internal static bool ShouldUseFellCleave(int gauge = 90) => LevelChecked(InnerBeast) && BeastGauge >= 50 && OptimalFellCleave() && HasST && InMeleeRange() && Minimal;
+    internal static bool ShouldUseFellCleave(int gauge = 90) => CanFC(gauge) && HasST && InMeleeRange() && Minimal;
     internal static bool ShouldUseTomahawk => LevelChecked(Tomahawk) && !InMeleeRange() && HasBattleTarget();
     internal static uint STCombo 
         => ComboTimer > 0 ? LevelChecked(Maim) && ComboAction == HeavySwing ? Maim
