@@ -66,13 +66,7 @@ internal partial class GNB
             GNB_Mit_Rampart_Health = new("GNB_Mit_Rampart_Health", 65),
             GNB_Mit_ArmsLength_Boss = new("GNB_Mit_ArmsLength_Boss", (int)BossAvoidance.On),
             GNB_Mit_ArmsLength_EnemyCount = new("GNB_Mit_ArmsLength_EnemyCount", 0),
-            GNB_Mit_Nebula_Health = new("GNB_Mit_Nebula_Health", 50),
-            GNB_Bozja_LostCure_Health = new("GNB_Bozja_LostCure_Health", 50),
-            GNB_Bozja_LostCure2_Health = new("GNB_Bozja_LostCure2_Health", 50),
-            GNB_Bozja_LostCure3_Health = new("GNB_Bozja_LostCure3_Health", 50),
-            GNB_Bozja_LostCure4_Health = new("GNB_Bozja_LostCure4_Health", 50),
-            GNB_Bozja_LostAethershield_Health = new("GNB_Bozja_LostAethershield_Health", 70),
-            GNB_Bozja_LostReraise_Health = new("GNB_Bozja_LostReraise_Health", 10);
+            GNB_Mit_Nebula_Health = new("GNB_Mit_Nebula_Health", 50);
 
         public static UserIntArray
             GNB_Mit_Priorities = new("GNB_Mit_Priorities");
@@ -396,37 +390,6 @@ internal partial class GNB
                     DrawHorizontalRadioButton(GNB_AoE_MitsOptions,
                         "Exclude Mitigations", "Disables the use of mitigations in Simple Mode.", 1);
                     break;
-
-                case Preset.GNB_Bozja_LostCure:
-                    DrawSliderInt(1, 100, GNB_Bozja_LostCure_Health,
-                        "Player HP% to be \nless than or equal to:", 200);
-                    break;
-
-                case Preset.GNB_Bozja_LostCure2:
-                    DrawSliderInt(1, 100, GNB_Bozja_LostCure2_Health,
-                        "Player HP% to be \nless than or equal to:", 200);
-                    break;
-
-                case Preset.GNB_Bozja_LostCure3:
-                    DrawSliderInt(1, 100, GNB_Bozja_LostCure3_Health,
-                        "Player HP% to be \nless than or equal to:", 200);
-                    break;
-
-                case Preset.GNB_Bozja_LostCure4:
-                    DrawSliderInt(1, 100, GNB_Bozja_LostCure4_Health,
-                        "Player HP% to be \nless than or equal to:", 200);
-                    break;
-
-                case Preset.GNB_Bozja_LostAethershield:
-                    DrawSliderInt(1, 100, GNB_Bozja_LostAethershield_Health,
-                        "Player HP% to be \nless than or equal to:", 200);
-                    break;
-
-                case Preset.GNB_Bozja_LostReraise:
-                    DrawSliderInt(1, 100, GNB_Bozja_LostReraise_Health,
-                        "Player HP% to be \nless than or equal to:", 200);
-                    break;
-
                     #endregion
             }
         }

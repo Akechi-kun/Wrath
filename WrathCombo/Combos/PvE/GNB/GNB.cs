@@ -31,8 +31,6 @@ internal partial class GNB : Tank
                 return Role.LowBlow;
             #endregion
 
-            if (ShouldUseOther)
-                return OtherAction;
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
 
@@ -149,8 +147,6 @@ internal partial class GNB : Tank
                 return Role.LowBlow;
             #endregion
 
-            if (ShouldUseOther)
-                return OtherAction;
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
 
@@ -276,8 +272,6 @@ internal partial class GNB : Tank
                 return Role.Interject;
             if (Role.CanLowBlow())
                 return Role.LowBlow;
-            if (ShouldUseOther)
-                return OtherAction;
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
 
@@ -356,8 +350,6 @@ internal partial class GNB : Tank
                 return Role.Interject;
             if (IsEnabled(Preset.GNB_AoE_Stun) && Role.CanLowBlow())
                 return Role.LowBlow;
-            if (ShouldUseOther)
-                return OtherAction;
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
 

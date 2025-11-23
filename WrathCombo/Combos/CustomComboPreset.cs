@@ -360,6 +360,173 @@ public enum Preset
 
     #endregion
 
+    #region BOZJA ACTIONS
+
+    #region Tank
+    [Bozja]
+    [CustomComboInfo("Enable Bozja Actions", "Adds Bozja actions into the rotation.", Job.ADV)]
+    Bozja_Tank = 111000,
+
+    #region Tank
+    [Bozja]
+    [CustomComboInfo("Lost Focus Option", "Use Lost Focus when available.", Job.ADV)]
+    Bozja_Tank_LostFocus = 111001,
+
+    [Bozja]
+    [CustomComboInfo("Lost Font Of Power Option", "Use Lost Font Of Power when available.", Job.ADV)]
+    Bozja_Tank_LostFontOfPower = 111002,
+
+    [Bozja]
+    [CustomComboInfo("Lost Slash Option", "Use Lost Slash when available.", Job.ADV)]
+    Bozja_Tank_LostSlash = 111003,
+
+    [Bozja]
+    [CustomComboInfo("Lost Death Option", "Use Lost Death when available.", Job.ADV)]
+    Bozja_Tank_LostDeath = 111004,
+
+    [Bozja]
+    [CustomComboInfo("Banner Of Noble Ends Option", "Use Banner Of Noble Ends when available.", Job.ADV)]
+    Bozja_Tank_BannerOfNobleEnds = 111005,
+
+    [Bozja]
+    [ParentCombo(Bozja_Tank_BannerOfNobleEnds)]
+    [CustomComboInfo("Only with 'Lost Font Of Power' Option", "Use Banner Of Noble Ends only when under Lost Font of Power.", Job.ADV)]
+    Bozja_Tank_PowerEnds = 111006,
+
+    [Bozja]
+    [CustomComboInfo("Banner Of Honored Sacrifice Option", "Use Banner Of Honored Sacrifice when available.", Job.ADV)]
+    Bozja_Tank_BannerOfHonoredSacrifice = 111007,
+
+    [Bozja]
+    [ParentCombo(Bozja_Tank_BannerOfHonoredSacrifice)]
+    [CustomComboInfo("Only with `Lost Font Of Power` Option", "Use Banner Of Honored Sacrifice only when under Lost Font of Power.", Job.ADV)]
+    Bozja_Tank_PowerSacrifice = 111008,
+
+    [Bozja]
+    [CustomComboInfo("Banner Of Honed Acuity Option", "Use Banner Of Honed Acuity when available.", Job.ADV)]
+    Bozja_Tank_BannerOfHonedAcuity = 111009,
+
+    [Bozja]
+    [CustomComboInfo("Lost Fair Trade Option", "Use Lost Fair Trade when available.", Job.ADV)]
+    Bozja_Tank_LostFairTrade = 111010,
+
+    [Bozja]
+    [CustomComboInfo("Lost Assassination Option", "Use Lost Assassination when available.", Job.ADV)]
+    Bozja_Tank_LostAssassination = 111011,
+
+    [Bozja]
+    [CustomComboInfo("Lost Manawall Option", "Use Lost Manawall when available.", Job.ADV)]
+    Bozja_Tank_LostManawall = 111012,
+
+    [Bozja]
+    [CustomComboInfo("Banner Of Tireless Conviction Option", "Use Banner Of Tireless Conviction when available.", Job.ADV)]
+    Bozja_Tank_BannerOfTirelessConviction = 111013,
+
+    [Bozja]
+    [CustomComboInfo("Lost Blood Rage Option", "Use Lost Blood Rage when available.", Job.ADV)]
+    Bozja_Tank_LostBloodRage = 111014,
+
+    [Bozja]
+    [CustomComboInfo("Banner Of Solemn Clarity Option", "Use Banner Of Solemn Clarity when available.", Job.ADV)]
+    Bozja_Tank_BannerOfSolemnClarity = 111015,
+
+    [Bozja]
+    [CustomComboInfo("Lost Cure Option", "Use Lost Cure when available.", Job.ADV)]
+    Bozja_Tank_LostCure = 111016,
+
+    [Bozja]
+    [CustomComboInfo("Lost Cure II Option", "Use Lost Cure II when available.", Job.ADV)]
+    Bozja_Tank_LostCure2 = 111017,
+
+    [Bozja]
+    [CustomComboInfo("Lost Cure III Option", "Use Lost Cure III when available.", Job.ADV)]
+    Bozja_Tank_LostCure3 = 111018,
+
+    [Bozja]
+    [CustomComboInfo("Lost Cure IV Option", "Use Lost Cure IV when available.", Job.ADV)]
+    Bozja_Tank_LostCure4 = 111019,
+
+    [Bozja]
+    [CustomComboInfo("Lost Arise Option", "Use Lost Arise when available.", Job.ADV)]
+    Bozja_Tank_LostArise = 111020,
+
+    [Bozja]
+    [CustomComboInfo("Lost Sacrifice Option", "Use Lost Sacrifice when available.", Job.ADV)]
+    Bozja_Tank_LostSacrifice = 111021,
+
+    [Bozja]
+    [CustomComboInfo("Lost Reraise Option", "Use Lost Reraise when available.", Job.ADV)]
+    Bozja_Tank_LostReraise = 111022,
+
+    [Bozja]
+    [CustomComboInfo("Lost Spellforge Option", "Use Lost Spellforge when available.", Job.ADV)]
+    Bozja_Tank_LostSpellforge = 111023,
+
+    [Bozja]
+    [CustomComboInfo("Lost Steel Sting Option", "Use Lost Steel Sting when available.", Job.ADV)]
+    Bozja_Tank_LostSteelsting = 111024,
+
+    [Bozja]
+    [CustomComboInfo("Lost Protect Option", "Use Lost Protect when available.", Job.ADV)]
+    Bozja_Tank_LostProtect = 111025,
+
+    [Bozja]
+    [CustomComboInfo("Lost Shell Option", "Use Lost Shell when available.", Job.ADV)]
+    Bozja_Tank_LostShell = 111026,
+
+    [Bozja]
+    [CustomComboInfo("Lost Reflect Option", "Use Lost Reflect when available.", Job.ADV)]
+    Bozja_Tank_LostReflect = 111027,
+
+    [Bozja]
+    [CustomComboInfo("Lost Bravery Option", "Use Lost Bravery when available.", Job.ADV)]
+    Bozja_Tank_LostBravery = 111028,
+
+    [Bozja]
+    [CustomComboInfo("Lost Aethershield Option", "Use Lost Aether Shield when available.", Job.ADV)]
+    Bozja_Tank_LostAethershield = 111029,
+
+    [Bozja]
+    [CustomComboInfo("Lost Protect II Option", "Use Lost Protect II when available.", Job.ADV)]
+    Bozja_Tank_LostProtect2 = 111030,
+
+    [Bozja]
+    [CustomComboInfo("Lost Shell II Option", "Use Lost Shell II when available.", Job.ADV)]
+    Bozja_Tank_LostShell2 = 111031,
+
+    [Bozja]
+    [CustomComboInfo("Lost Bubble Option", "Use Lost Bubble when available.", Job.ADV)]
+    Bozja_Tank_LostBubble = 111032,
+
+    [Bozja]
+    [CustomComboInfo("Lost Stealth Option", "Use Lost Stealth when available.", Job.ADV)]
+    Bozja_Tank_LostStealth = 111033,
+
+    [Bozja]
+    [CustomComboInfo("Lost Swift Option", "Use Lost Swift when available.", Job.ADV)]
+    Bozja_Tank_LostSwift = 111034,
+
+    [Bozja]
+    [CustomComboInfo("Lost Font Of Skill Option", "Use Lost Font Of Skill when available.", Job.ADV)]
+    Bozja_Tank_LostFontOfSkill = 111035,
+
+    [Bozja]
+    [CustomComboInfo("Lost Impetus Option", "Use Lost Impetus when available.", Job.ADV)]
+    Bozja_Tank_LostImpetus = 111036,
+
+    [Bozja]
+    [CustomComboInfo("Lost Paralyze III Option", "Use Lost Paralyze III when available.", Job.ADV)]
+    Bozja_Tank_LostParalyze3 = 111037,
+
+    [Bozja]
+    [CustomComboInfo("Lost Rampage Option", "Use Lost Rampage when available.", Job.ADV)]
+    Bozja_Tank_LostRampage = 111038,
+    #endregion
+
+    #endregion
+
+    #endregion
+
     #region PHANTOM ACTIONS
     [OccultCrescent(OccultCrescent.JobIDs.Freelancer)]
     [CustomComboInfo("Freelancer Job Actions", "Enable this to add Freelancer-specific actions into the rotation.", Job.ADV)]
@@ -3382,168 +3549,6 @@ public enum Preset
     [CustomComboInfo("Heart of Stone Target's Target Option", "Retargets Heart of Stone/Corundum to the Target's Target you do not have Aggro, can still be overridden with mouseover.", Job.GNB)]
     [Retargeted(GNB.HeartOfCorundum, GNB.HeartOfStone)]
     GNB_RetargetHeartofStone_TT = 7090,
-    #endregion
-
-    #region Bozja
-
-    [Bozja]
-    [CustomComboInfo("Lost Focus Option", "Use Lost Focus when available.", Job.GNB)]
-    GNB_Bozja_LostFocus = 7070,
-
-    [Bozja]
-    [CustomComboInfo("Lost Font Of Power Option", "Use Lost Font Of Power when available.", Job.GNB)]
-    GNB_Bozja_LostFontOfPower = 7036,
-
-    [Bozja]
-    [CustomComboInfo("Lost Slash Option", "Use Lost Slash when available.", Job.GNB)]
-    GNB_Bozja_LostSlash = 7037,
-
-    [Bozja]
-    [CustomComboInfo("Lost Death Option", "Use Lost Death when available.", Job.GNB)]
-    GNB_Bozja_LostDeath = 7038,
-
-    [Bozja]
-    [CustomComboInfo("Banner Of Noble Ends Option", "Use Banner Of Noble Ends when available.", Job.GNB)]
-    GNB_Bozja_BannerOfNobleEnds = 7039,
-
-    [Bozja]
-    [ParentCombo(GNB_Bozja_BannerOfNobleEnds)]
-    [CustomComboInfo("Only with `Lost Font Of Power` Option",
-        "Use Banner Of Noble Ends only when under Lost Font of Power.", Job.GNB)]
-    GNB_Bozja_PowerEnds = 7040,
-
-    [Bozja]
-    [CustomComboInfo("Banner Of Honored Sacrifice Option", "Use Banner Of Honored Sacrifice when available.",
-        Job.GNB)]
-    GNB_Bozja_BannerOfHonoredSacrifice = 7041,
-
-    [Bozja]
-    [ParentCombo(GNB_Bozja_BannerOfHonoredSacrifice)]
-    [CustomComboInfo("Only with `Lost Font Of Power` Option",
-        "Use Banner Of Honored Sacrifice only when under Lost Font of Power.", Job.GNB)]
-    GNB_Bozja_PowerSacrifice = 7042,
-
-    [Bozja]
-    [CustomComboInfo("Banner Of Honed Acuity Option", "Use Banner Of Honed Acuity when available.", Job.GNB)]
-    GNB_Bozja_BannerOfHonedAcuity = 7043,
-
-    [Bozja]
-    [CustomComboInfo("Lost Fair Trade Option", "Use Lost Fair Trade when available.", Job.GNB)]
-    GNB_Bozja_LostFairTrade = 7044,
-
-    [Bozja]
-    [CustomComboInfo("Lost Assassination Option", "Use Lost Assassination when available.", Job.GNB)]
-    GNB_Bozja_LostAssassination = 7045,
-
-    [Bozja]
-    [CustomComboInfo("Lost Manawall Option", "Use Lost Manawall when available.", Job.GNB)]
-    GNB_Bozja_LostManawall = 7046,
-
-    [Bozja]
-    [CustomComboInfo("Banner Of Tireless Conviction Option", "Use Banner Of Tireless Conviction when available.",
-        Job.GNB)]
-    GNB_Bozja_BannerOfTirelessConviction = 7047,
-
-    [Bozja]
-    [CustomComboInfo("Lost Blood Rage Option", "Use Lost Blood Rage when available.", Job.GNB)]
-    GNB_Bozja_LostBloodRage = 7048,
-
-    [Bozja]
-    [CustomComboInfo("Banner Of Solemn Clarity Option", "Use Banner Of Solemn Clarity when available.", Job.GNB)]
-    GNB_Bozja_BannerOfSolemnClarity = 7049,
-
-    [Bozja]
-    [CustomComboInfo("Lost Cure Option", "Use Lost Cure when available.", Job.GNB)]
-    GNB_Bozja_LostCure = 7050,
-
-    [Bozja]
-    [CustomComboInfo("Lost Cure II Option", "Use Lost Cure II when available.", Job.GNB)]
-    GNB_Bozja_LostCure2 = 7051,
-
-    [Bozja]
-    [CustomComboInfo("Lost Cure III Option", "Use Lost Cure III when available.", Job.GNB)]
-    GNB_Bozja_LostCure3 = 7052,
-
-    [Bozja]
-    [CustomComboInfo("Lost Cure IV Option", "Use Lost Cure IV when available.", Job.GNB)]
-    GNB_Bozja_LostCure4 = 7053,
-
-    [Bozja]
-    [CustomComboInfo("Lost Arise Option", "Use Lost Arise when available.", Job.GNB)]
-    GNB_Bozja_LostArise = 7054,
-
-    [Bozja]
-    [CustomComboInfo("Lost Sacrifice Option", "Use Lost Sacrifice when available.", Job.GNB)]
-    GNB_Bozja_LostSacrifice = 7055,
-
-    [Bozja]
-    [CustomComboInfo("Lost Reraise Option", "Use Lost Reraise when available.", Job.GNB)]
-    GNB_Bozja_LostReraise = 7056,
-
-    [Bozja]
-    [CustomComboInfo("Lost Spellforge Option", "Use Lost Spellforge when available.", Job.GNB)]
-    GNB_Bozja_LostSpellforge = 7057,
-
-    [Bozja]
-    [CustomComboInfo("Lost Steel Sting Option", "Use Lost Steel Sting when available.", Job.GNB)]
-    GNB_Bozja_LostSteelsting = 7058,
-
-    [Bozja]
-    [CustomComboInfo("Lost Protect Option", "Use Lost Protect when available.", Job.GNB)]
-    GNB_Bozja_LostProtect = 7059,
-
-    [Bozja]
-    [CustomComboInfo("Lost Shell Option", "Use Lost Shell when available.", Job.GNB)]
-    GNB_Bozja_LostShell = 7060,
-
-    [Bozja]
-    [CustomComboInfo("Lost Reflect Option", "Use Lost Reflect when available.", Job.GNB)]
-    GNB_Bozja_LostReflect = 7061,
-
-    [Bozja]
-    [CustomComboInfo("Lost Bravery Option", "Use Lost Bravery when available.", Job.GNB)]
-    GNB_Bozja_LostBravery = 7062,
-
-    [Bozja]
-    [CustomComboInfo("Lost Aethershield Option", "Use Lost Aether Shield when available.", Job.GNB)]
-    GNB_Bozja_LostAethershield = 7063,
-
-    [Bozja]
-    [CustomComboInfo("Lost Protect II Option", "Use Lost Protect II when available.", Job.GNB)]
-    GNB_Bozja_LostProtect2 = 7064,
-
-    [Bozja]
-    [CustomComboInfo("Lost Shell II Option", "Use Lost Shell II when available.", Job.GNB)]
-    GNB_Bozja_LostShell2 = 7065,
-
-    [Bozja]
-    [CustomComboInfo("Lost Bubble Option", "Use Lost Bubble when available.", Job.GNB)]
-    GNB_Bozja_LostBubble = 7066,
-
-    [Bozja]
-    [CustomComboInfo("Lost Stealth Option", "Use Lost Stealth when available.", Job.GNB)]
-    GNB_Bozja_LostStealth = 7067,
-
-    [Bozja]
-    [CustomComboInfo("Lost Swift Option", "Use Lost Swift when available.", Job.GNB)]
-    GNB_Bozja_LostSwift = 7068,
-
-    [Bozja]
-    [CustomComboInfo("Lost Font Of Skill Option", "Use Lost Font Of Skill when available.", Job.GNB)]
-    GNB_Bozja_LostFontOfSkill = 7069,
-
-    [Bozja]
-    [CustomComboInfo("Lost Impetus Option", "Use Lost Impetus when available.", Job.GNB)]
-    GNB_Bozja_LostImpetus = 7071,
-
-    [Bozja]
-    [CustomComboInfo("Lost Paralyze III Option", "Use Lost Paralyze III when available.", Job.GNB)]
-    GNB_Bozja_LostParalyze3 = 7072,
-
-    [Bozja]
-    [CustomComboInfo("Lost Rampage Option", "Use Lost Rampage when available.", Job.GNB)]
-    GNB_Bozja_LostRampage = 7073,
-
     #endregion
 
     #endregion
