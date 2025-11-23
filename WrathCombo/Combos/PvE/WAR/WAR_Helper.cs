@@ -94,54 +94,54 @@ internal partial class WAR : Tank
         bool IsEnabledAndUsable(Preset preset, uint action) => IsEnabled(preset) && CanUse(action);
 
         //Out-of-Combat
-        if (!InCombat() && IsEnabledAndUsable(Preset.WAR_Bozja_LostStealth, Bozja.LostStealth))
+        if (!InCombat() && IsEnabledAndUsable(Preset.Bozja_Tank_LostStealth, Bozja.LostStealth))
             return Bozja.LostStealth;
         //OGCDs
         if (CanWeave())
         {
             foreach (var (preset, action) in new[]
             {
-            (Preset.WAR_Bozja_LostFocus, Bozja.LostFocus),
-            (Preset.WAR_Bozja_LostFontOfPower, Bozja.LostFontOfPower),
-            (Preset.WAR_Bozja_LostSlash, Bozja.LostSlash),
-            (Preset.WAR_Bozja_LostFairTrade, Bozja.LostFairTrade),
-            (Preset.WAR_Bozja_LostAssassination, Bozja.LostAssassination),
+            (Preset.Bozja_Tank_LostFocus, Bozja.LostFocus),
+            (Preset.Bozja_Tank_LostFontOfPower, Bozja.LostFontOfPower),
+            (Preset.Bozja_Tank_LostSlash, Bozja.LostSlash),
+            (Preset.Bozja_Tank_LostFairTrade, Bozja.LostFairTrade),
+            (Preset.Bozja_Tank_LostAssassination, Bozja.LostAssassination),
         })
                 if (IsEnabledAndUsable(preset, action))
                     return action;
 
             foreach (var (preset, action, powerPreset) in new[]
             {
-            (Preset.WAR_Bozja_BannerOfNobleEnds, Bozja.BannerOfNobleEnds, Preset.WAR_Bozja_PowerEnds),
-            (Preset.WAR_Bozja_BannerOfHonoredSacrifice, Bozja.BannerOfHonoredSacrifice, Preset.WAR_Bozja_PowerSacrifice)
+            (Preset.Bozja_Tank_BannerOfNobleEnds, Bozja.BannerOfNobleEnds, Preset.Bozja_Tank_PowerEnds),
+            (Preset.Bozja_Tank_BannerOfHonoredSacrifice, Bozja.BannerOfHonoredSacrifice, Preset.Bozja_Tank_PowerSacrifice)
         })
                 if (IsEnabledAndUsable(preset, action) && (!IsEnabled(powerPreset) || JustUsed(Bozja.LostFontOfPower, 5f)))
                     return action;
 
-            if (IsEnabledAndUsable(Preset.WAR_Bozja_BannerOfHonedAcuity, Bozja.BannerOfHonedAcuity) &&
+            if (IsEnabledAndUsable(Preset.Bozja_Tank_BannerOfHonedAcuity, Bozja.BannerOfHonedAcuity) &&
                 !HasStatusEffect(Bozja.Buffs.BannerOfTranscendentFinesse))
                 return Bozja.BannerOfHonedAcuity;
         }
         //GCDs
         foreach (var (preset, action, condition) in new[]
         {
-        (Preset.WAR_Bozja_LostDeath, Bozja.LostDeath, true),
-        (Preset.WAR_Bozja_LostCure, Bozja.LostCure, PlayerHealthPercentageHp() <= WAR_Bozja_LostCure_Health),
-        (Preset.WAR_Bozja_LostArise, Bozja.LostArise, GetTargetHPPercent() == 0 && !HasStatusEffect(RoleActions.Magic.Buffs.Raise)),
-        (Preset.WAR_Bozja_LostReraise, Bozja.LostReraise, PlayerHealthPercentageHp() <= WAR_Bozja_LostReraise_Health),
-        (Preset.WAR_Bozja_LostProtect, Bozja.LostProtect, !HasStatusEffect(Bozja.Buffs.LostProtect)),
-        (Preset.WAR_Bozja_LostShell, Bozja.LostShell, !HasStatusEffect(Bozja.Buffs.LostShell)),
-        (Preset.WAR_Bozja_LostBravery, Bozja.LostBravery, !HasStatusEffect(Bozja.Buffs.LostBravery)),
-        (Preset.WAR_Bozja_LostBubble, Bozja.LostBubble, !HasStatusEffect(Bozja.Buffs.LostBubble)),
-        (Preset.WAR_Bozja_LostParalyze3, Bozja.LostParalyze3, !JustUsed(Bozja.LostParalyze3, 60f))
+        (Preset.Bozja_Tank_LostDeath, Bozja.LostDeath, true),
+        (Preset.Bozja_Tank_LostCure, Bozja.LostCure, PlayerHealthPercentageHp() <= Bozja_Tank_LostCure_Health),
+        (Preset.Bozja_Tank_LostArise, Bozja.LostArise, GetTargetHPPercent() == 0 && !HasStatusEffect(RoleActions.Magic.Buffs.Raise)),
+        (Preset.Bozja_Tank_LostReraise, Bozja.LostReraise, PlayerHealthPercentageHp() <= Bozja_Tank_LostReraise_Health),
+        (Preset.Bozja_Tank_LostProtect, Bozja.LostProtect, !HasStatusEffect(Bozja.Buffs.LostProtect)),
+        (Preset.Bozja_Tank_LostShell, Bozja.LostShell, !HasStatusEffect(Bozja.Buffs.LostShell)),
+        (Preset.Bozja_Tank_LostBravery, Bozja.LostBravery, !HasStatusEffect(Bozja.Buffs.LostBravery)),
+        (Preset.Bozja_Tank_LostBubble, Bozja.LostBubble, !HasStatusEffect(Bozja.Buffs.LostBubble)),
+        (Preset.Bozja_Tank_LostParalyze3, Bozja.LostParalyze3, !JustUsed(Bozja.LostParalyze3, 60f))
         })
             if (IsEnabledAndUsable(preset, action) && condition)
                 return action;
-        if (IsEnabled(Preset.WAR_Bozja_LostSpellforge) &&
+        if (IsEnabled(Preset.Bozja_Tank_LostSpellforge) &&
             CanUse(Bozja.LostSpellforge) &&
             (!HasStatusEffect(Bozja.Buffs.LostSpellforge) || !HasStatusEffect(Bozja.Buffs.LostSteelsting)))
             return Bozja.LostSpellforge;
-        if (IsEnabled(Preset.WAR_Bozja_LostSteelsting) &&
+        if (IsEnabled(Preset.Bozja_Tank_LostSteelsting) &&
             CanUse(Bozja.LostSteelsting) &&
             (!HasStatusEffect(Bozja.Buffs.LostSpellforge) || !HasStatusEffect(Bozja.Buffs.LostSteelsting)))
             return Bozja.LostSteelsting;

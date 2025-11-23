@@ -7,7 +7,7 @@ namespace WrathCombo.Combos.PvE
     {
         internal partial class Config
         {
-            public static readonly UserInt
+            public static UserInt
             Bozja_Tank_LostCure_Health = new("Bozja_Tank_LostCure_Health", 50),
             Bozja_Tank_LostCure2_Health = new("Bozja_Tank_LostCure2_Health", 50),
             Bozja_Tank_LostCure3_Health = new("Bozja_Tank_LostCure3_Health", 50),
