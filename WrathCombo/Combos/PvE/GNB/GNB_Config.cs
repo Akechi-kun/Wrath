@@ -12,8 +12,8 @@ internal partial class GNB
     internal static class Config
     {
         public static UserInt
-            GNB_Opener_StartChoice = new("GNB_Opener_StartChoice", 0),
-            GNB_Opener_NM = new("GNB_Opener_NM", 0),
+
+            //Single-Target
             GNB_ST_MitsOptions = new("GNB_ST_MitsOptions", 0),
             GNB_ST_Corundum_Health = new("GNB_ST_CorundumOption", 90),
             GNB_ST_Corundum_SubOption = new("GNB_ST_Corundum_Option", 0),
@@ -34,6 +34,9 @@ internal partial class GNB
             GNB_ST_NoMercyStop = new("GNB_ST_NoMercyStop", 5),
             GNB_ST_NoMercy_SubOption = new("GNB_ST_NoMercy_SubOption", 1),
             GNB_ST_Overcap_Choice = new("GNB_ST_Overcap_Choice", 0),
+            GNB_ST_Balance_Content = new("GNB_ST_Balance_Content", 1),
+
+            //AoE
             GNB_AoE_MitsOptions = new("GNB_AoE_MitsOptions", 0),
             GNB_AoE_Corundum_Health = new("GNB_AoE_CorundumOption", 90),
             GNB_AoE_Corundum_SubOption = new("GNB_AoE_Corundum_Option", 0),
@@ -54,10 +57,9 @@ internal partial class GNB
             GNB_AoE_FatedCircle_BurstStrike = new("GNB_AoE_FatedCircle_BurstStrike", 1),
             GNB_AoE_Overcap_Choice = new("GNB_AoE_Overcap_Choice", 0),
             GNB_AoE_NoMercyStop = new("GNB_AoE_NoMercyStop", 5),
-            GNB_NM_Features_Weave = new("GNB_NM_Feature_Weave", 0),
-            GNB_GF_Features_Choice = new("GNB_GF_Choice", 0),
-            GNB_GF_Overcap_Choice = new("GNB_GF_Overcap_Choice", 0),
-            GNB_ST_Balance_Content = new("GNB_ST_Balance_Content", 1),
+
+
+            //Mitigations
             GNB_Mit_Superbolide_Health = new("GNB_Mit_Superbolide_Health", 30),
             GNB_Mit_Corundum_Health = new("GNB_Mit_Corundum_Health", 60),
             GNB_Mit_Aurora_Charges = new("GNB_Mit_Aurora_Charges", 0),
@@ -67,6 +69,13 @@ internal partial class GNB
             GNB_Mit_ArmsLength_Boss = new("GNB_Mit_ArmsLength_Boss", (int)BossAvoidance.On),
             GNB_Mit_ArmsLength_EnemyCount = new("GNB_Mit_ArmsLength_EnemyCount", 0),
             GNB_Mit_Nebula_Health = new("GNB_Mit_Nebula_Health", 50),
+
+            //Other
+            GNB_Opener_StartChoice = new("GNB_Opener_StartChoice", 0),
+            GNB_Opener_NM = new("GNB_Opener_NM", 0),
+            GNB_NM_Features_Weave = new("GNB_NM_Feature_Weave", 0),
+            GNB_GF_Features_Choice = new("GNB_GF_Choice", 0),
+            GNB_GF_Overcap_Choice = new("GNB_GF_Overcap_Choice", 0),
             GNB_Bozja_LostCure_Health = new("GNB_Bozja_LostCure_Health", 50),
             GNB_Bozja_LostCure2_Health = new("GNB_Bozja_LostCure2_Health", 50),
             GNB_Bozja_LostCure3_Health = new("GNB_Bozja_LostCure3_Health", 50),

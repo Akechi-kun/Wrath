@@ -23,21 +23,20 @@ internal partial class GNB : Tank
             if (actionID != KeenEdge)
                 return actionID;
 
-            #region Non-Rotation
-            #region Stuns
             if (Role.CanInterject())
                 return Role.Interject;
+
             if (Role.CanLowBlow())
                 return Role.LowBlow;
-            #endregion
 
             if (ShouldUseOther)
-                return OtherAction;
+                return GetBozjaAction();
+
             if (ContentSpecificActions.TryGet(out var contentAction))
                 return contentAction;
 
-
             #region Mitigations
+            //TODO: revise
             if (GNB_ST_MitsOptions != 1)
             {
                 if (InCombat() && !MitUsed)
@@ -66,64 +65,75 @@ internal partial class GNB : Tank
             #endregion
 
             #region Rotation
+
             //Priority hack for increasing Continuation priority when inside late weave window
             if (CanDelayedWeave())
             {
-                if (ShouldUseContinuation)
+                if (ShouldUseContinuation(Preset.GNB_ST_Simple))
                     return OriginalHook(Continuation);
             }
-            if (ShouldUseLightningShot)
+
+            if (ShouldUseLightningShot(Preset.GNB_ST_Simple))
                 return LightningShot;
-            if (ShouldUseBloodfest)
+
+            if (ShouldUseBloodfest(Preset.GNB_ST_Simple))
                 return Bloodfest;
-            if (ShouldUseNoMercy(TraitLevelChecked(Traits.CartridgeCharge)))
+
+            if (ShouldUseNoMercy(Preset.GNB_ST_Simple, TraitLevelChecked(Traits.CartridgeCharge)))
                 return NoMercy;
-            if (JustUsed(BurstStrike, 5f) && LevelChecked(Hypervelocity) && HasStatusEffect(Buffs.ReadyToBlast))
-            {
-                if (NMcd is > 1.5f || //hold if No Mercy is imminent
-                    CanDelayedWeave(0.6f, 0f)) //send asap if about to lose due to GCD
-                    return Hypervelocity;
-            }
+
+            /*
+            //TODO: revise
+            if (JustUsed(BurstStrike, 5f) && 
+                LevelChecked(Hypervelocity) && 
+                HasStatusEffect(Buffs.ReadyToBlast) &&
+                (NMcd is > 1.5f || CanDelayedWeave(0.6f, 0f)))
+                return Hypervelocity;
+            */
+
             //with SKS, we want Zone first because it can drift really bad while Bow usually remains static
             //without SKS, we don't really care since both usually remain static
-            if (SlowGNB ? ShouldUseBowShock : ShouldUseZone)
+            var bow = ShouldUseBowShock(Preset.GNB_ST_Simple);
+            var zone = ShouldUseZone(Preset.GNB_ST_Simple);
+            if (SlowGNB ? bow : zone)
                 return SlowGNB ? BowShock : OriginalHook(DangerZone);
-            if (SlowGNB ? ShouldUseZone : ShouldUseBowShock)
+            if (SlowGNB ? zone : bow)
                 return SlowGNB ? OriginalHook(DangerZone) : BowShock;
-            if (ShouldUseContinuation &&
-                (CanWeave() || //normal
-                CanDelayedWeave(0.6f, 0f))) //send asap if about to lose due to GCD
+
+            if (ShouldUseContinuation(Preset.GNB_ST_Simple) &&
+                (CanWeave() || CanDelayedWeave(0.6f, 0f)))
                 return OriginalHook(Continuation);
-            if (LevelChecked(DoubleDown) && JustUsed(NoMercy, 5f) && GunStep == 0 && ComboAction is BrutalShell && Ammo == 1)
+
+            /*
+            //TODO: revise
+            if (LevelChecked(DoubleDown) &&
+                JustUsed(NoMercy, 5f) && 
+                AmmoComboStep == 0 && 
+                ComboAction is BrutalShell && Ammo == 1)
                 return SolidBarrel;
-            if (ShouldUseGnashingFang)
+            */
+
+            if (ShouldUseGnashingFang(Preset.GNB_ST_Simple))
                 return GnashingFang;
-            if (ShouldUseDoubleDown)
+
+            if (ShouldUseDoubleDown(Preset.GNB_ST_Simple))
                 return DoubleDown;
-            if (ShouldUseSonicBreak)
+
+            if (ShouldUseSonicBreak(Preset.GNB_ST_Simple))
                 return SonicBreak;
-            if (ShouldUseReignOfBeasts)
+
+            if (ShouldUseReignOfBeasts(Preset.GNB_ST_Simple))
                 return ReignOfBeasts;
-            if (ShouldUseBurstStrike ||
-                LevelChecked(DoubleDown) &&
-                NMcd < 1 && Ammo == 3 && !InOdd)
+
+            if (ShouldUseBSorFC(Preset.GNB_ST_Simple, BurstStrike))
                 return BurstStrike;
-            if (GunStep is 1 or 2)
+
+            if (AmmoComboStep is 1 or 2)
                 return OriginalHook(GnashingFang);
-            if (GunStep is 3 or 4)
+            if (AmmoComboStep is 3 or 4)
                 return OriginalHook(ReignOfBeasts);
-            if (ComboTimer > 0)
-            {
-                if (LevelChecked(BrutalShell) && ComboAction == KeenEdge)
-                    return BrutalShell;
-                if (LevelChecked(SolidBarrel) && ComboAction == BrutalShell)
-                {
-                    if (Ammo == MaxCartridges() && LevelChecked(BurstStrike))
-                        return BurstStrike;
-                    return SolidBarrel;
-                }
-            }
-            return STCombo;
+
+            return STCombo(Preset.GNB_ST_Simple);
             #endregion
         }
     }
@@ -207,11 +217,19 @@ internal partial class GNB : Tank
                 return LightningShot;
             if (IsEnabled(Preset.GNB_ST_Advanced))
             {
-                if (IsEnabled(Preset.GNB_ST_Bloodfest) && ShouldUseBloodfest)
+                if (ShouldUseBloodfest(Preset.GNB_ST_Bloodfest))
                     return Bloodfest;
-                if (IsEnabled(Preset.GNB_ST_NoMercy) && ShouldUseNoMercy(TraitLevelChecked(Traits.CartridgeCharge)) && GetTargetHPPercent() > STStopNM &&
-                    (GNB_ST_NoMercy_SubOption == 0 || GNB_ST_NoMercy_SubOption == 1 && InBossEncounter()))
+
+                //No Mercy
+                if (ShouldUseNoMercy
+                    (
+                        Preset.GNB_ST_NoMercy, 
+                        TraitLevelChecked(Traits.CartridgeCharge),
+                        GNB_ST_NoMercyStop, 
+                        GNB_ST_NoMercy_SubOption)
+                    )
                     return NoMercy;
+
                 if (IsEnabled(Preset.GNB_ST_Continuation) && IsEnabled(Preset.GNB_ST_NoMercy) &&
                     JustUsed(BurstStrike, 5f) && LevelChecked(Hypervelocity) && HasStatusEffect(Buffs.ReadyToBlast))
                 {
@@ -221,7 +239,7 @@ internal partial class GNB : Tank
                 }
             }
             if (IsEnabled(Preset.GNB_ST_Scuffed) &&
-                LevelChecked(DoubleDown) && JustUsed(NoMercy, 5f) && GunStep == 0 && ComboAction is BrutalShell && Ammo == 1)
+                LevelChecked(DoubleDown) && JustUsed(NoMercy, 5f) && AmmoComboStep == 0 && ComboAction is BrutalShell && Ammo == 1)
                 return SolidBarrel;
             if (IsEnabled(Preset.GNB_ST_Advanced))
             {
@@ -251,9 +269,9 @@ internal partial class GNB : Tank
                         return BurstStrike;
                 }
             }
-            if (IsEnabled(Preset.GNB_ST_GnashingFang) && GunStep is 1 or 2)
+            if (IsEnabled(Preset.GNB_ST_GnashingFang) && AmmoComboStep is 1 or 2)
                 return OriginalHook(GnashingFang);
-            if (IsEnabled(Preset.GNB_ST_Reign) && GunStep is 3 or 4)
+            if (IsEnabled(Preset.GNB_ST_Reign) && AmmoComboStep is 3 or 4)
                 return OriginalHook(ReignOfBeasts);
             return STCombo;
             #endregion
@@ -314,8 +332,14 @@ internal partial class GNB : Tank
             {
                 if (CanWeave())
                 {
-                    if (ShouldUseNoMercy(LevelChecked(DemonSlaughter)) && GetTargetHPPercent() > 10)
+                    if (ShouldUseNoMercy
+                        (
+                            Preset.GNB_AoE_Simple, 
+                            LevelChecked(DemonSlaughter), 
+                            10
+                        ))
                         return NoMercy;
+
                     if (LevelChecked(FatedBrand) && HasStatusEffect(Buffs.ReadyToRaze))
                         return FatedBrand;
                 }
@@ -323,15 +347,17 @@ internal partial class GNB : Tank
                     return BowShock;
                 if (ShouldUseZone)
                     return OriginalHook(DangerZone);
-                if (ShouldUseBloodfest)
+
+                if (ShouldUseBloodfest(Preset.GNB_AoE_Simple))
                     return Bloodfest;
+
                 if (CanSB && HasNM && !HasStatusEffect(Buffs.ReadyToRaze))
                     return SonicBreak;
                 if (CanDD && HasNM)
                     return DoubleDown;
-                if (CanReign || GunStep is 3 or 4)
+                if (CanReign || AmmoComboStep is 3 or 4)
                     return OriginalHook(ReignOfBeasts);
-                if (CanBS && ((HasNM && (IsOnCooldown(DoubleDown) || !LevelChecked(DoubleDown)) && GunStep == 0) || BFcd < 6 || (ComboAction == DemonSlice && Ammo == MaxCartridges())))
+                if (CanBS && ((HasNM && (IsOnCooldown(DoubleDown) || !LevelChecked(DoubleDown)) && AmmoComboStep == 0) || BFcd < 6 || (ComboAction == DemonSlice && Ammo == MaxCartridges)))
                     return LevelChecked(FatedCircle) ? FatedCircle : BurstStrike;
             }
             return AOECombo;
@@ -405,14 +431,22 @@ internal partial class GNB : Tank
             {
                 if (CanWeave())
                 {
-                    if (IsEnabled(Preset.GNB_AoE_NoMercy) && ShouldUseNoMercy(LevelChecked(DemonSlaughter)) && GetTargetHPPercent() > AoEStopNM)
+                    if (ShouldUseNoMercy
+                        (
+                            Preset.GNB_AoE_NoMercy,
+                            LevelChecked(DemonSlaughter),
+                            GNB_AoE_NoMercyStop
+                        ))
                         return NoMercy;
+
                     if (IsEnabled(Preset.GNB_AoE_BowShock) && ShouldUseBowShock)
                         return BowShock;
                     if (IsEnabled(Preset.GNB_AoE_Zone) && ShouldUseZone)
                         return OriginalHook(DangerZone);
-                    if (IsEnabled(Preset.GNB_AoE_Bloodfest) && ShouldUseBloodfest)
+
+                    if (ShouldUseBloodfest(Preset.GNB_AoE_Bloodfest))
                         return Bloodfest;
+
                     if (LevelChecked(FatedBrand) && HasStatusEffect(Buffs.ReadyToRaze))
                         return FatedBrand;
                 }
@@ -420,13 +454,13 @@ internal partial class GNB : Tank
                     return SonicBreak;
                 if (IsEnabled(Preset.GNB_AoE_DoubleDown) && CanDD && HasNM)
                     return DoubleDown;
-                if (IsEnabled(Preset.GNB_AoE_Reign) && (CanReign || GunStep is 3 or 4))
+                if (IsEnabled(Preset.GNB_AoE_Reign) && (CanReign || AmmoComboStep is 3 or 4))
                     return OriginalHook(ReignOfBeasts);
                 if (IsEnabled(Preset.GNB_AoE_FatedCircle) && CanBS)
                 {
-                    if ((HasNM && (IsOnCooldown(DoubleDown) || !LevelChecked(DoubleDown) || !IsEnabled(Preset.GNB_AoE_DoubleDown)) && GunStep == 0) || //burst
+                    if ((HasNM && (IsOnCooldown(DoubleDown) || !LevelChecked(DoubleDown) || !IsEnabled(Preset.GNB_AoE_DoubleDown)) && AmmoComboStep == 0) || //burst
                         (LevelChecked(Bloodfest) && IsEnabled(Preset.GNB_AoE_Bloodfest) && BFcd < 6) || //Bloodfest prep
-                        (GNB_AoE_Overcap_Choice == 0 && ComboAction == DemonSlice && Ammo == MaxCartridges()))
+                        (GNB_AoE_Overcap_Choice == 0 && ComboAction == DemonSlice && Ammo == MaxCartridges))
                         return LevelChecked(FatedCircle) ? FatedCircle : GNB_AoE_FatedCircle_BurstStrike == 0 ? BurstStrike : LevelChecked(DemonSlaughter)  && ComboAction == DemonSlice ? DemonSlaughter : DemonSlice;
                 }
             }
@@ -447,6 +481,7 @@ internal partial class GNB : Tank
             bool NMchoice = GNB_GF_Features_Choice == 1; //No Mercy as button
             if ((GFchoice && actionID != GnashingFang) || (NMchoice && actionID != NoMercy))
                 return actionID;
+
             if (IsEnabled(Preset.GNB_GF_Features))
             {
                 //Priority hack for ensuring Continuation is used on late weave at the very latest
@@ -458,8 +493,14 @@ internal partial class GNB : Tank
                 }
                 if (IsEnabled(Preset.GNB_GF_Bloodfest) && ShouldUseBloodfest)
                     return Bloodfest;
-                if (IsEnabled(Preset.GNB_GF_NoMercy) && ShouldUseNoMercy(TraitLevelChecked(Traits.CartridgeCharge)))
+                //No Mercy
+                if (ShouldUseNoMercy
+                    (
+                        Preset.GNB_GF_NoMercy,
+                        TraitLevelChecked(Traits.CartridgeCharge)
+                    ))
                     return NoMercy;
+
                 if (IsEnabled(Preset.GNB_GF_Continuation) && JustUsed(BurstStrike, 5f) && LevelChecked(Hypervelocity) && HasStatusEffect(Buffs.ReadyToBlast))
                 {
                     if (NMcd is > 1.5f || //hold if No Mercy is imminent
@@ -492,9 +533,9 @@ internal partial class GNB : Tank
                         LevelChecked(DoubleDown) && NMcd < 1 && Ammo == 3 && !InOdd)
                         return BurstStrike;
                 }
-                if (IsEnabled(Preset.GNB_GF_Features) && GunStep is 1 or 2)
+                if (IsEnabled(Preset.GNB_GF_Features) && AmmoComboStep is 1 or 2)
                     return OriginalHook(GnashingFang);
-                if (IsEnabled(Preset.GNB_GF_Reign) && GunStep is 3 or 4)
+                if (IsEnabled(Preset.GNB_GF_Reign) && AmmoComboStep is 3 or 4)
                     return OriginalHook(ReignOfBeasts);
             }
             return actionID;
@@ -523,11 +564,11 @@ internal partial class GNB : Tank
                 return Bloodfest;
             if (useDD && Ammo == 1)
                 return DoubleDown;
-            if (IsEnabled(Preset.GNB_BS_GnashingFang) && (CanGF || GunStep is 1 or 2))
+            if (IsEnabled(Preset.GNB_BS_GnashingFang) && (CanGF || AmmoComboStep is 1 or 2))
                 return OriginalHook(GnashingFang);
             if (useDD && Ammo > 1)
                 return DoubleDown;
-            if (IsEnabled(Preset.GNB_BS_Reign) && (CanReign || GunStep is 3 or 4))
+            if (IsEnabled(Preset.GNB_BS_Reign) && (CanReign || AmmoComboStep is 3 or 4))
                 return OriginalHook(ReignOfBeasts);
             return actionID;
         }
@@ -553,7 +594,7 @@ internal partial class GNB : Tank
                 return BowShock;
             if (IsEnabled(Preset.GNB_FC_DoubleDown) && !IsEnabled(Preset.GNB_FC_DoubleDown_NM) && CanDD)
                 return DoubleDown;
-            if (IsEnabled(Preset.GNB_FC_Reign) && (CanReign || GunStep is 3 or 4))
+            if (IsEnabled(Preset.GNB_FC_Reign) && (CanReign || AmmoComboStep is 3 or 4))
                 return OriginalHook(ReignOfBeasts);
             return actionID;
         }
