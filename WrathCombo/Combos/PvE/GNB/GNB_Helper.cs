@@ -517,7 +517,7 @@ internal partial class GNB : Tank
         public override int MaxOpenerLevel => 109;
         internal override UserData ContentCheckConfig => GNB_ST_Balance_Content;
         public override bool HasCooldowns() => IsOffCooldown(Bloodfest) && IsOffCooldown(NoMercy) && IsOffCooldown(GnashingFang) && IsOffCooldown(DoubleDown) && IsOffCooldown(BowShock) && Ammo == 0;
-        public override List<(int[] Steps, Func<bool> Condition)> SkipSteps { get; set; } = [([1], () => InMeleeRange())];
+        public override List<(int[] Steps, Func<bool> Condition)> SkipSteps { get; set; } = [([1], () => HasBattleTarget() && InMeleeRange())];
     }
     internal class Lv100FastNormalNM : GNBOpenerLv100Base
     {
