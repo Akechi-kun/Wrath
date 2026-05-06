@@ -5,6 +5,7 @@ using ECommons;
 using ECommons.EzIpcManager;
 using ECommons.Reflection;
 using System;
+using WrathCombo.Combos.PvE;
 
 #endregion
 
@@ -41,12 +42,14 @@ public abstract class ReusableIPC : IDisposable
         DalamudReflector.TryGetDalamudPlugin(
             PluginName, out _plugin, ignoreCache: true);
 
-    protected IDalamudPlugin Plugin
+    protected object? Plugin
     {
         get
         {
             if (PluginIsLoaded)
-                return (IDalamudPlugin)_plugin!;
+                if (_plugin is IDalamudPlugin)
+                    return (IDalamudPlugin)_plugin!;
+                else return (IAsyncDalamudPlugin)_plugin!;
             throw new InvalidOperationException(
                 "Plugin is not loaded or does not exist. " +
                 "(This should be used after a `PluginIsLoaded` check)");
