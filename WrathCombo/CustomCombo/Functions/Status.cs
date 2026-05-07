@@ -6,6 +6,7 @@ using ECommons.GameFunctions;
 using ECommons.GameHelpers;
 using ECommons.MathHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
+using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using System;
 using System.Linq;
 using WrathCombo.Data;
@@ -245,6 +246,7 @@ internal abstract partial class CustomComboFunctions
         {
             Svc.Targets.Target = null;
             OverrideTarget = null;
+            UIState.Instance()->Hotbar.CancelCast();
         }
 
         return hasActionPenalty;
