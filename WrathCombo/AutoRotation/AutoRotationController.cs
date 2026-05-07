@@ -58,15 +58,15 @@ internal unsafe class AutoRotationController
     public AutoRotationController()
     {
         OnPartyCombatChanged += ResetError;
-        Svc.Chat.ChatMessage += ScanForWarnings;
+        //Svc.Chat.ChatMessage += ScanForWarnings;
         OnStatusChanged += StatusChanged;
     }
 
     private void StatusChanged(uint statusId, bool onPlayer)
     {
         Svc.Log.Verbose($"[AutoRotStatusCheck] {((ushort)statusId).StatusName()} {(onPlayer ? "Gained" : "Lost")}");
-        if (statusId == 5191 && !onPlayer)
-            Paused = false;
+        //if (statusId == 5191 && !onPlayer)
+        //    Paused = false;
     }
 
     private void ScanForWarnings(Dalamud.Game.Chat.IHandleableChatMessage message)
@@ -101,7 +101,7 @@ internal unsafe class AutoRotationController
     public void Dispose()
     {
         OnPartyCombatChanged -= ResetError;
-        Svc.Chat.ChatMessage -= ScanForWarnings;
+        //Svc.Chat.ChatMessage -= ScanForWarnings;
     }
 
     private void ResetError(bool state)
