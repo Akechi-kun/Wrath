@@ -601,16 +601,11 @@ internal partial class PLD : Tank
             if (actionID is not (Requiescat or Imperator))
                 return actionID;
 
-            bool canFightOrFlight = OriginalHook(FightOrFlight) is FightOrFlight && ActionReady(FightOrFlight);
-
             // Fight or Flight
             if (PLD_Requiescat_SubOption == 1)
             {
-                if (!LevelChecked(Requiescat) || canFightOrFlight && ActionReady(OriginalHook(Requiescat)))
+                if (ActionReady(FightOrFlight) && ActionReady(OriginalHook(Requiescat)))
                     return OriginalHook(FightOrFlight);
-
-                if (HasStatusEffect(Buffs.GoringBladeReady))
-                    return OriginalHook(GoringBlade);
             }
 
             // Confiteor & Blades
