@@ -390,25 +390,25 @@ public static class DebugFile
                 ["Rotation Behavior"] = new Dictionary<object, object>
                 {
                     // Key in Settings           Alias for Setting
-                    ["BlockSpellOnMove"] = "Block Spell on Move",
-                    ["ActionChanging"] = "Action Replacing",
-                    ["SuppressQueuedActions"] = "Queued Action Suppression",
-                    ["Throttle"] = "Throttle (ms)",
-                    ["MovementLeeway"] = "Movement Delay (s)",
-                    ["OpenerTimeout"] = "Opener Timeout (s)",
-                    ["MeleeOffset"] = "Melee Offset (y)",
-                    ["InterruptDelay"] = "Interrupt/Stun Delay (%)",
-                    ["MaximumWeavesPerWindow"] = "Maximum Weaves Per Window",
+                    ["BlockSpellOnMove"]        = "Block Spell on Move",
+                    ["ActionChanging"]          = "Action Replacing",
+                    ["SuppressQueuedActions"]   = "Queued Action Suppression",
+                    ["Throttle"]                = "Throttle (ms)",
+                    ["MovementLeeway"]          = "Movement Delay (s)",
+                    ["OpenerTimeout"]           = "Opener Timeout (s)",
+                    ["MeleeOffset"]             = "Melee Offset (y)",
+                    ["InterruptDelay"]          = "Interrupt/Stun Delay (%)",
+                    ["MaximumWeavesPerWindow"]  = "Maximum Weaves Per Window",
                 },
                 ["Targeting"] = new Dictionary<object, object>
                 {
-                    ["RetargetHealingActionsToStack"] = "Retarget Healing Actions",
-                    ["CustomHealStack"] = "Heal Stack",
-                    ["RaiseStack"] = "Raise Stack",
+                    ["RetargetHealingActionsToStack"]   = "Retarget Healing Actions",
+                    ["CustomHealStack"]                 = "Heal Stack",
+                    ["RaiseStack"]                      = "Raise Stack",
                 },
                 ["XIV"] = new Dictionary<object, object>
                 {
-                    [UIControl.AutoFaceTargetOnAction] = "Auto Face Target",
+                    [UIControl.AutoFaceTargetOnAction]      = "Auto Face Target",
                     [UIConfig.GroundTargetActionExcuteType] = "2x-Press Ground Actions",
                 },
             };
