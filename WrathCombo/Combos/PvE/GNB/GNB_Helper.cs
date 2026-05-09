@@ -105,6 +105,7 @@ internal partial class GNB : Tank
             JustUsed(Superbolide);
         
         var numberOfEnemies = NumberOfEnemiesInRange(Role.Reprisal);
+        var pre68Mitigation = !LevelChecked(HeartOfStone) && numberOfEnemies >= 3;
         #endregion
         
         #region Initial Bailout
@@ -147,7 +148,8 @@ internal partial class GNB : Tank
         #endregion
         
         #region Heart of Light Overlapping 5+
-        if (numberOfEnemies >= 5 && IsEnabled(Preset.GNB_Mit_Advanced_NonBoss_HeartOfLight) && 
+        if ((numberOfEnemies >= 5 || pre68Mitigation) && 
+            IsEnabled(Preset.GNB_Mit_Advanced_NonBoss_HeartOfLight) && 
             ActionReady(HeartOfLight) && !HasStatusEffect(Buffs.Superbolide))
         {
             actionID = HeartOfLight;
@@ -167,7 +169,7 @@ internal partial class GNB : Tank
         if (mitigationRunning || numberOfEnemies <= 2) return false; //Bail if already Mitted or too few enemies
         
         #region Mitigation 5+
-        if (numberOfEnemies >= 5)
+        if (numberOfEnemies >= 5 || pre68Mitigation)
         {
             if (ActionReady(Superbolide) && IsEnabled(Preset.GNB_Mit_Advanced_NonBoss_Superbolide))
             {
