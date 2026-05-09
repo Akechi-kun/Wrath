@@ -52,15 +52,23 @@ public static class ConflictingPluginsChecks
         PluginLog.Verbose(
             "[ConflictingPlugins] Periodic check for conflicting plugins");
 
-        BossMod.CheckForConflict();
-        BossModReborn.CheckForConflict();
-        Redirect.CheckForConflict();
-        ReAction.CheckForConflict();
-        ReActionEx.CheckForConflict();
-        MOAction.CheckForConflict();
-        Wrath.CheckForConflict();
-        XIV.CheckForConflict();
-        Dalamud.CheckForConflict();
+        try
+        {
+            BossMod.CheckForConflict();
+            BossModReborn.CheckForConflict();
+            Redirect.CheckForConflict();
+            ReAction.CheckForConflict();
+            ReActionEx.CheckForConflict();
+            MOAction.CheckForConflict();
+            Wrath.CheckForConflict();
+            XIV.CheckForConflict();
+            Dalamud.CheckForConflict();
+        }
+        catch
+        {
+            PluginLog.Warning(
+                "[ConflictingPlugins] Periodic check failed (async plugin?)");
+        }
 
         Svc.Framework.RunOnTick(RunChecks!, TS.FromSeconds(4.11));
     };
@@ -80,7 +88,7 @@ public static class ConflictingPluginsChecks
         // ReSharper disable once RedundantAssignment
         var ts = TS.FromMinutes(1); // 1m initial delay after plugin launch
 #if DEBUG
-        ts = TS.FromSeconds(10); // 10s for debug mode
+        ts = TS.FromSeconds(30); // 10s for debug mode
 #endif
 
         Svc.Framework.RunOnTick(RunChecks, ts);
