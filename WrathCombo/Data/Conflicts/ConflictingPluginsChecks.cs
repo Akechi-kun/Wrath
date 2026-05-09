@@ -339,27 +339,11 @@ public static class ConflictingPluginsChecks
             if (!ThrottlePassed(forceRefresh: forceRefresh))
                 return;
 
-            ConflictingActions = [];
+            ConflictingActions = [(0, "")];
             var conflictedThisCheck = false;
             var wrathRetargeted = PresetStorage.AllRetargetedActions.ToHashSet();
             // ReSharper disable once InlineOutVariableDeclaration
             string stackName;
-
-            #region Auto Targeting Enabled
-
-            if (IPC.IsAutoTargetingEnabled() &&
-                AutoRotationController.cfg.DPSRotationMode != DPSRotationMode.Manual)
-            {
-                PluginLog.Verbose(
-                    $"[ConflictingPlugins] [{Name}] Auto Targeting is Enabled");
-                ConflictingActions = [(1, "")];
-                MarkConflict();
-                conflictedThisCheck = true;
-            }
-            else
-                ConflictingActions = [(0, "")];
-
-            #endregion
 
             #region All Actions Retargeted
 
