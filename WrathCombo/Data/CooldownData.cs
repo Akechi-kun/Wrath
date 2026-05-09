@@ -57,7 +57,7 @@ internal class CooldownData
         get
         {
             if (MaxCharges == 1)
-                return CooldownRemaining is 0 or 0.5f ? 1 : 0u;
+                return ActionManager.Instance()->GetActionStatus(ActionType.Action, ActionID) == 0 || CooldownRemaining == 0 ? 1 : 0u;
 
             return ActionManager.Instance()->GetCurrentCharges(ActionID);
         }
