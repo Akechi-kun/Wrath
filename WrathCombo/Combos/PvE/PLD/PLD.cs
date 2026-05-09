@@ -604,8 +604,14 @@ internal partial class PLD : Tank
             bool canFightOrFlight = OriginalHook(FightOrFlight) is FightOrFlight && ActionReady(FightOrFlight);
 
             // Fight or Flight
-            if (PLD_Requiescat_SubOption == 2 && (!LevelChecked(Requiescat) || canFightOrFlight && ActionReady(OriginalHook(Requiescat))))
-                return OriginalHook(FightOrFlight);
+            if (PLD_Requiescat_SubOption == 1)
+            {
+                if (!LevelChecked(Requiescat) || canFightOrFlight && ActionReady(OriginalHook(Requiescat)))
+                    return OriginalHook(FightOrFlight);
+
+                if (HasStatusEffect(Buffs.GoringBladeReady))
+                    return OriginalHook(GoringBlade);
+            }
 
             // Confiteor & Blades
             if (HasStatusEffect(Buffs.ConfiteorReady) || LevelChecked(BladeOfFaith) && OriginalHook(Confiteor) != Confiteor)
@@ -634,8 +640,8 @@ internal partial class PLD : Tank
                 return OriginalHook(SpiritsWithin);
 
             if (ActionReady(CircleOfScorn) &&
-                (PLD_SpiritsWithin_SubOption == 1 ||
-                 PLD_SpiritsWithin_SubOption == 2 && JustUsed(OriginalHook(SpiritsWithin), 5f)))
+                (PLD_SpiritsWithin_SubOption == 0 ||
+                 PLD_SpiritsWithin_SubOption == 1 && JustUsed(OriginalHook(SpiritsWithin), 5f)))
                 return CircleOfScorn;
 
             return actionID;
