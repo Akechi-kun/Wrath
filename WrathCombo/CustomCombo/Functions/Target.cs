@@ -372,7 +372,7 @@ internal abstract partial class CustomComboFunctions
         if (!ActionWatching.ActionSheet.TryGetValue(aoeSpell, out var sheetSpell))
             return Enumerable.Empty<IGameObject>();
 
-        if (sheetSpell.CanTargetHostile)
+        if (sheetSpell.CanTargetHostile && sheetSpell.CastType == 1)
         {
             return Svc.Objects.Where(x => x.IsHostile() && GetTargetDistance(x) <= GetActionRange(aoeSpell) && (!checkIgnoredList || !Service.Configuration.IgnoredNPCs.ContainsKey(x.BaseId)));
         }
